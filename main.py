@@ -211,6 +211,8 @@ def run_algorithms(window, size, rows, algorithm):
                             node.update_neighbours(grid)
                     # Lambda function allows function with these perimeters to be calles over and over without having to assign another function
                     # specifically to that
+
+                    # Which algorithm to use:
                     if algorithm == "a*":
                         algorithms.a_star_algorithm(lambda: board.draw_board(window, grid,
                                                                              rows, size), grid, start, end)
@@ -218,6 +220,12 @@ def run_algorithms(window, size, rows, algorithm):
                     if algorithm == "breadth first":
                         algorithms.breadth_first_search(lambda: board.draw_board(window, grid,
                                                                                  rows, size), grid, start, end)
+
+                    if algorithm == "depth first":
+                        algorithms.depth_first_search(lambda: board.draw_board(window, grid,
+                                                                               rows, size), grid, start, end)
+
+                    # Reset started variable so that user can again give commands
                     started = False
 
 
@@ -262,6 +270,19 @@ def main(window, size, rows):
                                   outline=BUTTON3
                                   )
     buttons.append(breadth_first_button)
+    # Depth first search algorithm
+    depth_first_button = Button(BUTTON1,
+                                BUTTON2,
+                                size // 2 - size // 6,  # Removing half the width so it's in the middle
+                                size * 4 // 10,
+                                size // 3,
+                                size // 15,
+                                lambda: run_algorithms(
+                                    window, size, rows, "depth first"),
+                                text='Depth first search',
+                                outline=BUTTON3
+                                )
+    buttons.append(depth_first_button)
 
     run = True
     while run:

@@ -89,21 +89,22 @@ class Node():
     def update_neighbours(self, grid):
         self.neighbours = []
 
-        # Checks node below
-        if self.row < self.total_rows - 1 and not grid[self.row + 1][self.col].is_barrier():
-            self.neighbours.append(grid[self.row + 1][self.col])
-
-        # Checks node above
-        if self.row > 0 and not grid[self.row - 1][self.col].is_barrier():
-            self.neighbours.append(grid[self.row - 1][self.col])
-
+        # Order is important for depth first search algorithm
         # Checks node to the left
         if self.col > 0 and not grid[self.row][self.col - 1].is_barrier():
             self.neighbours.append(grid[self.row][self.col - 1])
 
+        # Checks node below
+        if self.row < self.total_rows - 1 and not grid[self.row + 1][self.col].is_barrier():
+            self.neighbours.append(grid[self.row + 1][self.col])
+
         # Checks node to the right
         if self.col < self.total_rows - 1 and not grid[self.row][self.col + 1].is_barrier():
             self.neighbours.append(grid[self.row][self.col + 1])
+
+        # Checks node above
+        if self.row > 0 and not grid[self.row - 1][self.col].is_barrier():
+            self.neighbours.append(grid[self.row - 1][self.col])
 
 
 # Board Functions -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

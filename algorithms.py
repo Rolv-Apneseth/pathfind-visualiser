@@ -1,4 +1,4 @@
-from queue import PriorityQueue, Queue
+from queue import PriorityQueue, Queue, LifoQueue
 import pygame
 
 
@@ -100,9 +100,9 @@ def a_star_algorithm(draw, grid, start, end):
     return False
 
 
-# Breadth first search --------------------------------------------------------------------------------
+# Breadth first search -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 def breadth_first_search(draw, grid, start, end):
-    """Searches every possible path from the starting node and returns the shortest."""
+    """Searches every possible path from node to node starting at the start node and returns the shortest."""
 
     # Queue allows nodes to be searched in a certain order
     # Operates on a FIFO basis
@@ -132,6 +132,67 @@ def breadth_first_search(draw, grid, start, end):
         for neighbour in current.neighbours:
             # Neighbour is only added to queue if it has not yet been visited
             if path[neighbour]:
+                continue
+            # If statement so start node's colour does not get altered
+            if not neighbour == start:
+                open_set.put(neighbour)
+                neighbour.make_open()
+                path[neighbour] = current
+
+        # Update the display
+        draw()
+
+        # Closes the node after it has been looped through
+        if not current == start:
+            current.make_closed()
+
+    return False
+
+
+# Breadth first search -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+def depth_first_search(draw, grid, start, end):
+    """
+    Searches every possible path from the starting node and returns a route.
+
+    Depth first search will be extremely innacurate at giving short paths in open mazes.
+    This is because it searches nodes in order of top, right, bottom, left so it will always
+    expand go to the left if possible (LIFO), often returning very longwinded routes to get to the end node.
+    """
+
+    # Queue allows nodes to be searched in a certain order
+    # Operates on a FIFO basis
+    open_set = LifoQueue()
+    open_set.put(start)
+
+    # Keeps track of node prior in the path to a certain node
+    path = {}
+    # Keeps track of whether a node has been visited already
+    visited = {}
+
+    # Add all nodes to path and visited so they can be used in if statements without throwing a key error
+    for row in grid:
+        for node in row:
+            path[node] = None
+            visited[node] = False
+
+    # While loop runs until the end point is found or there are no nodes left to search
+    while not open_set.empty():
+        # Necessary as a new loop has been opened
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                quit()
+
+        # Gets first item in the queue which will always be the last node added (LIFO)
+        current = open_set.get()
+        visited[current] = True
+
+        if current == end:
+            reconstruct_final_path(path, current, draw, start, end)
+            return True
+
+        for neighbour in current.neighbours:
+            # Neighbour is only added to queue if it has not yet been visited
+            if visited[neighbour]:
                 continue
             # If statement so start node's colour does not get altered
             if not neighbour == start:
