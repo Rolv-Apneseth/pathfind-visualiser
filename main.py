@@ -214,6 +214,10 @@ def run_algorithms(window, size, rows, algorithm):
                     if algorithm == "a*":
                         algorithms.a_star_algorithm(lambda: board.draw_board(window, grid,
                                                                              rows, size), grid, start, end)
+
+                    if algorithm == "breadth first":
+                        algorithms.breadth_first_search(lambda: board.draw_board(window, grid,
+                                                                                 rows, size), grid, start, end)
                     started = False
 
 
@@ -233,7 +237,7 @@ def main(window, size, rows):
     controls_label = small_font.render("Controls:", 1, TEXT_COLOUR)
 
     # DEFINE BUTTONS
-    # starts game in normal mode
+    # A* pathfinding algorithm
     a_star_button = Button(BUTTON1,
                            BUTTON2,
                            size // 2 - size // 8,  # Removing half the width so it's in the middle
@@ -245,6 +249,19 @@ def main(window, size, rows):
                            outline=BUTTON3
                            )
     buttons.append(a_star_button)
+    # Breadth first search algorithm
+    breadth_first_button = Button(BUTTON1,
+                                  BUTTON2,
+                                  size // 2 - size // 6,  # Removing half the width so it's in the middle
+                                  size * 3 // 10,
+                                  size // 3,
+                                  size // 15,
+                                  lambda: run_algorithms(
+                                      window, size, rows, "breadth first"),
+                                  text='Breadth first search',
+                                  outline=BUTTON3
+                                  )
+    buttons.append(breadth_first_button)
 
     run = True
     while run:

@@ -1,8 +1,25 @@
-from queue import PriorityQueue
+from queue import PriorityQueue, Queue
 import pygame
 
 
 # Algorithm Functions -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+def reconstruct_final_path(path, current, draw, start, end):
+    """Goes through each node in the path calculated by an algorithm function, and draws out the path on the display."""
+
+    while current in path:
+        # path contains nodes as node: node before that node,
+        # so this goes through the nodes backwards from the end node to the start node
+        current = path[current]
+        current.make_path()
+        draw()
+        if current == start:
+            break
+
+    # Make start and end nodes change colour back to their original, and not the path colour
+    end.make_end()
+    start.make_start()
+
+
 def heur(p1, p2):
     """
     Heuristic function, gets a prediction for the distance from the given node to the end node, which is used to
@@ -15,25 +32,17 @@ def heur(p1, p2):
     return abs(x1 - x2) + abs(y1 - y2)
 
 
-def reconstruct_final_path(path, current, draw):
-    """Goes through each node in the path calculated by the algorithm function, and draws out the path on the display."""
-
-    while current in path:
-        # path contains nodes as node: node before that node with lowest g_score,
-        # so this goes through the nodes backwards from ends with the lowest g_scores
-        current = path[current]
-        current.make_path()
-        draw()
-
-
+# A* ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 def a_star_algorithm(draw, grid, start, end):
+    """Searches through nodes guided by a heuristic function which predicts the distance to the end node and prioritises which node to search based on this."""
+
     # Keeps track of when node is inserted to the queue
     count = 0
     # Will be used to ge the minimum element from the queue, based on the f_score
     open_set = PriorityQueue()
     # add start node to open set, count to keep track of when item was inserted to queue
     open_set.put((0, count, start))
-    # keeps track of node prior in the path to the current node, updated if a new node with lower g_score is found
+    # keeps track of node prior in the path to a certain node, updated if a new node with lower g_score is found
     path = {}
 
     # Current shortest distance to get from the start node to this node
@@ -61,10 +70,7 @@ def a_star_algorithm(draw, grid, start, end):
 
         # As soon as the end node is reached, the path is built and the loop ends
         if current == end:
-            reconstruct_final_path(path, end, draw)
-            # Make start and end nodes change colour back to their original, and not the path colour
-            end.make_end()
-            start.make_start()
+            reconstruct_final_path(path, end, draw, start, end)
             return True
 
         for neighbour in current.neighbours:
@@ -89,6 +95,55 @@ def a_star_algorithm(draw, grid, start, end):
 
         # Closes the node after it has been looped through, but note it can be added back in and opened if another path to it is found
         if current != start:
+            current.make_closed()
+
+    return False
+
+
+# Breadth first search --------------------------------------------------------------------------------
+def breadth_first_search(draw, grid, start, end):
+    """Searches every possible path from the starting node and returns the shortest."""
+
+    # Queue allows nodes to be searched in a certain order
+    # Operates on a FIFO basis
+    open_set = Queue()
+    open_set.put(start)
+
+    # Keeps track of node prior in the path to a certain node
+    path = {}
+    # Add all nodes to path so they can be used in if statements without throwing a key error
+    for row in grid:
+        for node in row:
+            path[node] = None
+
+    while not open_set.empty():
+        # Necessary as a new loop has been opened
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                quit()
+
+        # Gets first item in the queue which will always be the item added before all the others (FIFO_)
+        current = open_set.get()
+
+        if current == end:
+            reconstruct_final_path(path, current, draw, start, end)
+            return True
+
+        for neighbour in current.neighbours:
+            # Neighbour is only added to queue if it has not yet been visited
+            if path[neighbour]:
+                continue
+            # If statement so start node's colour does not get altered
+            if not neighbour == start:
+                open_set.put(neighbour)
+                neighbour.make_open()
+                path[neighbour] = current
+
+        # Update the display
+        draw()
+
+        # Closes the node after it has been looped through, but note it can be added back in and opened if another path to it is found
+        if not current == start:
             current.make_closed()
 
     return False
