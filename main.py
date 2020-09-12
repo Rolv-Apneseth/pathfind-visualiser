@@ -225,6 +225,10 @@ def run_algorithms(window, size, rows, algorithm):
                         algorithms.depth_first_search(lambda: board.draw_board(window, grid,
                                                                                rows, size), grid, start, end)
 
+                    if algorithm == "dijkstra's":
+                        algorithms.dijkstras(lambda: board.draw_board(window, grid,
+                                                                      rows, size), grid, start, end)
+
                     # Reset started variable so that user can again give commands
                     started = False
 
@@ -260,7 +264,8 @@ def main(window, size, rows):
     # Breadth first search algorithm
     breadth_first_button = Button(BUTTON1,
                                   BUTTON2,
-                                  size // 2 - size // 6,  # Removing half the width so it's in the middle
+                                  # Removing half the width so it's in the middle, same for the other buttons
+                                  size // 2 - size // 6,
                                   size * 3 // 10,
                                   size // 3,
                                   size // 15,
@@ -273,7 +278,7 @@ def main(window, size, rows):
     # Depth first search algorithm
     depth_first_button = Button(BUTTON1,
                                 BUTTON2,
-                                size // 2 - size // 6,  # Removing half the width so it's in the middle
+                                size // 2 - size // 6,
                                 size * 4 // 10,
                                 size // 3,
                                 size // 15,
@@ -283,6 +288,19 @@ def main(window, size, rows):
                                 outline=BUTTON3
                                 )
     buttons.append(depth_first_button)
+    # Dijkstra's shortest path algorithm
+    dijkstra_button = Button(BUTTON1,
+                             BUTTON2,
+                             size // 2 - size // 6,
+                             size * 5 // 10,
+                             size // 3,
+                             size // 15,
+                             lambda: run_algorithms(
+                                 window, size, rows, "dijkstra's"),
+                             text="Dijkstra's algorithm",
+                             outline=BUTTON3
+                             )
+    buttons.append(dijkstra_button)
 
     run = True
     while run:

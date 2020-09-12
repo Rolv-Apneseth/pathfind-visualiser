@@ -34,7 +34,10 @@ def heur(p1, p2):
 
 # A* ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 def a_star_algorithm(draw, grid, start, end):
-    """Searches through nodes guided by a heuristic function which predicts the distance to the end node and prioritises which node to search based on this."""
+    """
+    Searches through nodes guided by a heuristic function which predicts the distance to the end node and prioritises which node to search based on this.
+    This is usually the fastest algorithm, but this is beacuse it knows where the end point is (heuristic function) so it can search in the right direction.
+    """
 
     # Keeps track of when node is inserted to the queue
     count = 0
@@ -89,7 +92,8 @@ def a_star_algorithm(draw, grid, start, end):
                     count += 1
                     open_set.put((f_score[neighbour], count, neighbour))
                     open_set_hash.add(neighbour)
-                    neighbour.make_open()
+                    if neighbour != end:
+                        neighbour.make_open()
         # Update the display
         draw()
 
@@ -136,7 +140,8 @@ def breadth_first_search(draw, grid, start, end):
             # If statement so start node's colour does not get altered
             if not neighbour == start:
                 open_set.put(neighbour)
-                neighbour.make_open()
+                if neighbour != end:
+                    neighbour.make_open()
                 path[neighbour] = current
 
         # Update the display
@@ -149,7 +154,7 @@ def breadth_first_search(draw, grid, start, end):
     return False
 
 
-# Breadth first search -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Depth first search -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 def depth_first_search(draw, grid, start, end):
     """
     Searches every possible path from the starting node and returns a route.
@@ -197,8 +202,81 @@ def depth_first_search(draw, grid, start, end):
             # If statement so start node's colour does not get altered
             if not neighbour == start:
                 open_set.put(neighbour)
-                neighbour.make_open()
+                if neighbour != end:
+                    neighbour.make_open()
                 path[neighbour] = current
+
+        # Update the display
+        draw()
+
+        # Closes the node after it has been looped through, but note it can be added back in and opened if another path to it is found
+        if not current == start:
+            current.make_closed()
+
+    return False
+
+
+# Dijkstra's shortest path algorithm -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+def dijkstras(draw, grid, start, end):
+    """Will appear extremely similar to breadth first search, but it is built to handleedges between nodes of different weights and uses a priority queue based on these weights."""
+
+    # Will allow the algorithm to prioritise nodes with lower distance scores but since all edges have weight 1, visually this won't make much of a difference
+    open_set = PriorityQueue()
+
+    # Position of item added to the queue, required for the priority queue
+    count = 0
+
+    # Minimum distance to get to each node
+    distance_score = {}
+    # Contains each node's previous node in it's shortest path
+    path = {}
+    # Keeps track of which nodes have already been visited
+    visited = {}
+
+    # Add all nodes to path and visited so they can be used in if statements without throwing a key error
+    # Give all nodes an infinite distance score so that any path that reaches them is shorter
+    for row in grid:
+        for node in row:
+            path[node] = None
+            distance_score[node] = float("inf")
+            visited[node] = False
+
+    # Set distance score of start node to 0 and add it to the open set
+    distance_score[start] = 0
+    open_set.put((distance_score[start], count, start))
+
+    # Loop will end when the end node is reached or when there are no nodes left to search
+    while not open_set.empty():
+        # Gets node with lowest distance score and sets it to visited
+        current = open_set.get()[2]
+        visited[current] = True
+
+        # Path is constructed as soon as the end node is reached
+        # If the distance score was to be used, the distance to the end node would also have to be added
+        if current == end:
+            reconstruct_final_path(path, current, draw, start, end)
+            return True
+
+        # Loops through neighbours of the current node, which will always be valid neighbours (because of class function update_neighbours)
+        for neighbour in current.neighbours:
+            # If neighbour has been visited, skip
+            if visited[neighbour]:
+                continue
+
+            # +1 because in this graph, the distance between all nodes is equivalent to 1 i.e. all edges have the same weight
+            # If the edges had different weights, this is where the weight to that specific node would be taken into account
+            if distance_score[current] + 1 < distance_score[neighbour]:
+                # Update shortest path to that node
+                distance_score[neighbour] = distance_score[current] + 1
+                # Update count, again only for the priority queue functionality
+                count += 1
+                # Add neighbour to queue
+                open_set.put((distance_score[neighbour], count, neighbour))
+                # Update path for neighbour
+                path[neighbour] = current
+                # So the colour of the end node won't be changed
+                if neighbour != end:
+                    neighbour.make_open()
 
         # Update the display
         draw()
