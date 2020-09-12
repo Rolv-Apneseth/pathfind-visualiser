@@ -2,7 +2,7 @@ from queue import PriorityQueue, Queue, LifoQueue
 import pygame
 
 
-# Algorithm Functions -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Algorithm Helper Functions -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 def reconstruct_final_path(path, current, draw, start, end):
     """Goes through each node in the path calculated by an algorithm function, and draws out the path on the display."""
 
@@ -30,6 +30,20 @@ def heur(p1, p2):
     x1, y1 = p1
     x2, y2 = p2
     return abs(x1 - x2) + abs(y1 - y2)
+
+
+def open_node(end, neighbour):
+    """Sets a node to open if it is not the end node."""
+
+    if neighbour != end:
+        neighbour.make_open()
+
+
+def close_node(start, current):
+    """Sets a node to closed if it is not the start node."""
+
+    if current != start:
+        current.make_closed()
 
 
 # A* ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -92,14 +106,13 @@ def a_star_algorithm(draw, grid, start, end):
                     count += 1
                     open_set.put((f_score[neighbour], count, neighbour))
                     open_set_hash.add(neighbour)
-                    if neighbour != end:
-                        neighbour.make_open()
+                    # Sets neighbour node to open
+                    open_node(end, neighbour)
         # Update the display
         draw()
 
         # Closes the node after it has been looped through, but note it can be added back in and opened if another path to it is found
-        if current != start:
-            current.make_closed()
+        close_node(start, current)
 
     return False
 
@@ -140,16 +153,15 @@ def breadth_first_search(draw, grid, start, end):
             # If statement so start node's colour does not get altered
             if not neighbour == start:
                 open_set.put(neighbour)
-                if neighbour != end:
-                    neighbour.make_open()
+                # Sets neighbour node to open
+                open_node(end, neighbour)
                 path[neighbour] = current
 
         # Update the display
         draw()
 
         # Closes the node after it has been looped through
-        if not current == start:
-            current.make_closed()
+        close_node(start, current)
 
     return False
 
@@ -202,16 +214,15 @@ def depth_first_search(draw, grid, start, end):
             # If statement so start node's colour does not get altered
             if not neighbour == start:
                 open_set.put(neighbour)
-                if neighbour != end:
-                    neighbour.make_open()
+                # Sets neighbour node to open
+                open_node(end, neighbour)
                 path[neighbour] = current
 
         # Update the display
         draw()
 
-        # Closes the node after it has been looped through, but note it can be added back in and opened if another path to it is found
-        if not current == start:
-            current.make_closed()
+        # Closes the node after it has been looped through
+        close_node(start, current)
 
     return False
 
@@ -274,15 +285,13 @@ def dijkstras(draw, grid, start, end):
                 open_set.put((distance_score[neighbour], count, neighbour))
                 # Update path for neighbour
                 path[neighbour] = current
-                # So the colour of the end node won't be changed
-                if neighbour != end:
-                    neighbour.make_open()
+                # Sets neighbour node to open
+                open_node(end, neighbour)
 
         # Update the display
         draw()
 
-        # Closes the node after it has been looped through, but note it can be added back in and opened if another path to it is found
-        if not current == start:
-            current.make_closed()
+        # Closes the node after it has been looped through
+        close_node(start, current)
 
     return False
