@@ -229,6 +229,10 @@ def run_algorithms(window, size, rows, algorithm):
                         algorithms.dijkstras(lambda: board.draw_board(window, grid,
                                                                       rows, size), grid, start, end)
 
+                    if algorithm == "best-first":
+                        algorithms.best_first(lambda: board.draw_board(window, grid,
+                                                                       rows, size), grid, start, end)
+
                     # Reset started variable so that user can again give commands
                     started = False
 
@@ -252,9 +256,9 @@ def main(window, size, rows):
     # A* pathfinding algorithm
     a_star_button = Button(BUTTON1,
                            BUTTON2,
-                           size // 2 - size // 8,  # Removing half the width so it's in the middle
+                           size * 3 // 4,
                            size * 2 // 10,
-                           size // 4,
+                           size // 6,
                            size // 15,
                            lambda: run_algorithms(window, size, rows, "a*"),
                            text='A*',
@@ -264,9 +268,8 @@ def main(window, size, rows):
     # Breadth first search algorithm
     breadth_first_button = Button(BUTTON1,
                                   BUTTON2,
-                                  # Removing half the width so it's in the middle, same for the other buttons
-                                  size // 2 - size // 6,
-                                  size * 3 // 10,
+                                  size * 5 // 16 - size // 6,
+                                  size * 2 // 10,
                                   size // 3,
                                   size // 15,
                                   lambda: run_algorithms(
@@ -278,8 +281,8 @@ def main(window, size, rows):
     # Depth first search algorithm
     depth_first_button = Button(BUTTON1,
                                 BUTTON2,
-                                size // 2 - size // 6,
-                                size * 4 // 10,
+                                size * 5 // 16 - size // 6,
+                                size * 3 // 10,
                                 size // 3,
                                 size // 15,
                                 lambda: run_algorithms(
@@ -291,8 +294,8 @@ def main(window, size, rows):
     # Dijkstra's shortest path algorithm
     dijkstra_button = Button(BUTTON1,
                              BUTTON2,
-                             size // 2 - size // 6,
-                             size * 5 // 10,
+                             size * 5 // 16 - size // 6,
+                             size * 4 // 10,
                              size // 3,
                              size // 15,
                              lambda: run_algorithms(
@@ -301,6 +304,19 @@ def main(window, size, rows):
                              outline=BUTTON3
                              )
     buttons.append(dijkstra_button)
+    # Greedy best-first search algorithm
+    best_first_button = Button(BUTTON1,
+                               BUTTON2,
+                               size * 5 // 16 - size // 6,
+                               size * 5 // 10,
+                               size * 7 // 16,
+                               size // 15,
+                               lambda: run_algorithms(
+                                   window, size, rows, "best-first"),
+                               text="Greedy best-first search",
+                               outline=BUTTON3
+                               )
+    buttons.append(best_first_button)
 
     run = True
     while run:

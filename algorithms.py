@@ -229,7 +229,7 @@ def depth_first_search(draw, grid, start, end):
 
 # Dijkstra's shortest path algorithm -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 def dijkstras(draw, grid, start, end):
-    """Will appear extremely similar to breadth first search, but it is built to handleedges between nodes of different weights and uses a priority queue based on these weights."""
+    """Will appear extremely similar to breadth first search, but it is built to handle edges between nodes of different weights and uses a priority queue based on these weights."""
 
     # Will allow the algorithm to prioritise nodes with lower distance scores but since all edges have weight 1, visually this won't make much of a difference
     open_set = PriorityQueue()
@@ -287,6 +287,66 @@ def dijkstras(draw, grid, start, end):
                 path[neighbour] = current
                 # Sets neighbour node to open
                 open_node(end, neighbour)
+
+        # Update the display
+        draw()
+
+        # Closes the node after it has been looped through
+        close_node(start, current)
+
+    return False
+
+
+# Greedy best-first search -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+def best_first(draw, grid, start, end):
+    """Uses the manhattan distance heuristic function like the a* algorithm, but does not take into account distance already travelled."""
+
+    # Will allow the algorithm to prioritise nodes with lower distance scores but since all edges have weight 1, visually this won't make much of a difference
+    open_set = PriorityQueue()
+    # Position of item added to the queue, required for the priority queue
+    count = 0
+
+    # Distance to the end node (manhattan)
+    distance_score = {}
+    # Contains each node's previous node in it's shortest path. Also used to keep track of which nodes have been visited
+    path = {}
+
+    # Add all nodes to path so they can be used in if statements without throwing a key error
+    # Give all nodes a distance score calculated with the heuristic function
+    for row in grid:
+        for node in row:
+            path[node] = None
+            distance_score[node] = heur(node.get_position(),
+                                        end.get_position()
+                                        )
+
+    # Add start node to the open set
+    open_set.put((distance_score[start], count, start))
+
+    # Loop will end when the end node is reached or when there are no nodes left to search
+    while not open_set.empty():
+        # Gets node with lowest distance score
+        current = open_set.get()[2]
+
+        # Path is constructed as soon as the end node is reached
+        if current == end:
+            reconstruct_final_path(path, current, draw, start, end)
+            return True
+
+        # Loops through neighbours of the current node, which will always be valid neighbours (because of class function update_neighbours)
+        for neighbour in current.neighbours:
+            # If neighbour has been visited, skip
+            if path[neighbour]:
+                continue
+
+            # Update path to neighbour
+            path[neighbour] = current
+            # Update count, again only for the priority queue functionality
+            count += 1
+            # Add neighbour to queue
+            open_set.put((distance_score[neighbour], count, neighbour))
+            # Sets neighbour node to open
+            open_node(end, neighbour)
 
         # Update the display
         draw()
