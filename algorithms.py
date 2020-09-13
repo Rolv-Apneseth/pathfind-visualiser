@@ -7,6 +7,11 @@ def reconstruct_final_path(path, current, draw, start, end):
     """Goes through each node in the path calculated by an algorithm function, and draws out the path on the display."""
 
     while current in path:
+        # Necessary as a new loop has been opened
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                quit()
+
         # path contains nodes as node: node before that node,
         # so this goes through the nodes backwards from the end node to the start node
         current = path[current]
@@ -184,13 +189,13 @@ def depth_first_search(draw, grid, start, end):
     # Keeps track of node prior in the path to a certain node
     path = {}
     # Keeps track of whether a node has been visited already
-    visited = {}
+    # visited = {}
 
     # Add all nodes to path and visited so they can be used in if statements without throwing a key error
     for row in grid:
         for node in row:
             path[node] = None
-            visited[node] = False
+            # visited[node] = False
 
     # While loop runs until the end point is found or there are no nodes left to search
     while not open_set.empty():
@@ -201,7 +206,7 @@ def depth_first_search(draw, grid, start, end):
 
         # Gets first item in the queue which will always be the last node added (LIFO)
         current = open_set.get()
-        visited[current] = True
+        # visited[current] = True
 
         if current == end:
             reconstruct_final_path(path, current, draw, start, end)
@@ -209,7 +214,7 @@ def depth_first_search(draw, grid, start, end):
 
         for neighbour in current.neighbours:
             # Neighbour is only added to queue if it has not yet been visited
-            if visited[neighbour]:
+            if path[neighbour]:
                 continue
             # If statement so start node's colour does not get altered
             if not neighbour == start:
@@ -242,7 +247,7 @@ def dijkstras(draw, grid, start, end):
     # Contains each node's previous node in it's shortest path
     path = {}
     # Keeps track of which nodes have already been visited
-    visited = {}
+    # visited = {}
 
     # Add all nodes to path and visited so they can be used in if statements without throwing a key error
     # Give all nodes an infinite distance score so that any path that reaches them is shorter
@@ -250,7 +255,7 @@ def dijkstras(draw, grid, start, end):
         for node in row:
             path[node] = None
             distance_score[node] = float("inf")
-            visited[node] = False
+            # visited[node] = False
 
     # Set distance score of start node to 0 and add it to the open set
     distance_score[start] = 0
@@ -258,9 +263,14 @@ def dijkstras(draw, grid, start, end):
 
     # Loop will end when the end node is reached or when there are no nodes left to search
     while not open_set.empty():
+        # Necessary as a new loop has been opened
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                quit()
+
         # Gets node with lowest distance score and sets it to visited
         current = open_set.get()[2]
-        visited[current] = True
+        # visited[current] = True
 
         # Path is constructed as soon as the end node is reached
         # If the distance score was to be used, the distance to the end node would also have to be added
@@ -271,7 +281,7 @@ def dijkstras(draw, grid, start, end):
         # Loops through neighbours of the current node, which will always be valid neighbours (because of class function update_neighbours)
         for neighbour in current.neighbours:
             # If neighbour has been visited, skip
-            if visited[neighbour]:
+            if path[neighbour]:
                 continue
 
             # +1 because in this graph, the distance between all nodes is equivalent to 1 i.e. all edges have the same weight
@@ -325,6 +335,11 @@ def best_first(draw, grid, start, end):
 
     # Loop will end when the end node is reached or when there are no nodes left to search
     while not open_set.empty():
+        # Necessary as a new loop has been opened
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                quit()
+
         # Gets node with lowest distance score
         current = open_set.get()[2]
 
