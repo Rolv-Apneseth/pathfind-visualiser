@@ -55,7 +55,8 @@ def close_node(start, current):
 def a_star_algorithm(draw, grid, start, end):
     """
     Searches through nodes guided by a heuristic function which predicts the distance to the end node and prioritises which node to search based on this.
-    This is usually the fastest algorithm, but this is beacuse it knows where the end point is (heuristic function) so it can search in the right direction.
+    As this is a guided algorithm, it is usually faster than unguided ones.
+    This ensures the shortest path.
     """
 
     # Keeps track of when node is inserted to the queue
@@ -124,7 +125,10 @@ def a_star_algorithm(draw, grid, start, end):
 
 # Breadth first search -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 def breadth_first_search(draw, grid, start, end):
-    """Searches every possible path from node to node starting at the start node and returns the shortest."""
+    """
+    Searches every possible path from node to node starting at the start node and returns the shortest.
+    This ensures the shortest path.
+    """
 
     # Queue allows nodes to be searched in a certain order
     # Operates on a FIFO basis
@@ -179,6 +183,7 @@ def depth_first_search(draw, grid, start, end):
     Depth first search will be extremely innacurate at giving short paths in open mazes.
     This is because it searches nodes in order of top, right, bottom, left so it will always
     expand go to the left if possible (LIFO), often returning very longwinded routes to get to the end node.
+    Hence, this does not ensure the shortest path.
     """
 
     # Queue allows nodes to be searched in a certain order
@@ -234,7 +239,11 @@ def depth_first_search(draw, grid, start, end):
 
 # Dijkstra's shortest path algorithm -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 def dijkstras(draw, grid, start, end):
-    """Will appear extremely similar to breadth first search, but it is built to handle edges between nodes of different weights and uses a priority queue based on these weights."""
+    """
+    Will appear extremely similar to breadth first search, but it is built to handle edges between nodes of different weights and uses a priority queue based on these weights.
+
+    This ensures the shortest path.
+    """
 
     # Will allow the algorithm to prioritise nodes with lower distance scores but since all edges have weight 1, visually this won't make much of a difference
     open_set = PriorityQueue()
@@ -309,7 +318,11 @@ def dijkstras(draw, grid, start, end):
 
 # Greedy best-first search -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 def best_first(draw, grid, start, end):
-    """Uses the manhattan distance heuristic function like the a* algorithm, but does not take into account distance already travelled."""
+    """
+    Uses the manhattan distance heuristic function like the a* algorithm, but does not take into account distance already travelled.
+
+    This does not ensure the shortest path as it does not take into account the distance from the start node.
+    """
 
     # Will allow the algorithm to prioritise nodes with lower distance scores but since all edges have weight 1, visually this won't make much of a difference
     open_set = PriorityQueue()
