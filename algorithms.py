@@ -191,16 +191,13 @@ def depth_first_search(draw, grid, start, end):
     open_set = LifoQueue()
     open_set.put(start)
 
-    # Keeps track of node prior in the path to a certain node
+    # Keeps track of node prior in the path to a certain node, also keeps track of whether a node has been visited
     path = {}
-    # Keeps track of whether a node has been visited already
-    # visited = {}
 
-    # Add all nodes to path and visited so they can be used in if statements without throwing a key error
+    # Add all nodes to path so they can be used in if statements without throwing a key error
     for row in grid:
         for node in row:
             path[node] = None
-            # visited[node] = False
 
     # While loop runs until the end point is found or there are no nodes left to search
     while not open_set.empty():
@@ -211,7 +208,6 @@ def depth_first_search(draw, grid, start, end):
 
         # Gets first item in the queue which will always be the last node added (LIFO)
         current = open_set.get()
-        # visited[current] = True
 
         if current == end:
             reconstruct_final_path(path, current, draw, start, end)
@@ -253,18 +249,15 @@ def dijkstras(draw, grid, start, end):
 
     # Minimum distance to get to each node
     distance_score = {}
-    # Contains each node's previous node in it's shortest path
+    # Contains each node's previous node in it's shortest path, also keeps track of which nodes have been visited
     path = {}
-    # Keeps track of which nodes have already been visited
-    # visited = {}
 
-    # Add all nodes to path and visited so they can be used in if statements without throwing a key error
+    # Add all nodes to path so they can be used in if statements without throwing a key error
     # Give all nodes an infinite distance score so that any path that reaches them is shorter
     for row in grid:
         for node in row:
             path[node] = None
             distance_score[node] = float("inf")
-            # visited[node] = False
 
     # Set distance score of start node to 0 and add it to the open set
     distance_score[start] = 0
@@ -277,9 +270,8 @@ def dijkstras(draw, grid, start, end):
             if event.type == pygame.QUIT:
                 quit()
 
-        # Gets node with lowest distance score and sets it to visited
+        # Gets node with lowest distance score
         current = open_set.get()[2]
-        # visited[current] = True
 
         # Path is constructed as soon as the end node is reached
         # If the distance score was to be used, the distance to the end node would also have to be added
@@ -367,14 +359,16 @@ def best_first(draw, grid, start, end):
             if path[neighbour]:
                 continue
 
-            # Update path to neighbour
-            path[neighbour] = current
-            # Update count, again only for the priority queue functionality
-            count += 1
-            # Add neighbour to queue
-            open_set.put((distance_score[neighbour], count, neighbour))
-            # Sets neighbour node to open
-            open_node(end, neighbour)
+            # If statement so start node's colour does not get altered and it does not get added to the open set
+            if not neighbour == start:
+                # Update path to neighbour
+                path[neighbour] = current
+                # Update count, again only for the priority queue functionality
+                count += 1
+                # Add neighbour to queue
+                open_set.put((distance_score[neighbour], count, neighbour))
+                # Sets neighbour node to open
+                open_node(end, neighbour)
 
         # Update the display
         draw()
