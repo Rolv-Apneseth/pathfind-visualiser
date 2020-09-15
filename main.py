@@ -38,15 +38,17 @@ def outline_rect(window, size, x, y, width, height):
 
 
 def draw_instructions(window, size):
-    # Background
+    # BACKGROUND
     bg_colour = BG2
+    # Measurements, all label placements will be based off these as well
     x = size // 20
     y = size // 10
     width = size // 2
     height = size * 17 // 40
 
+    # Draws outline arround background
     outline_rect(window, size, x, y, width, height)
-
+    # Draws background surface
     pygame.draw.rect(window, bg_colour, (x,
                                          y,
                                          width,
@@ -54,8 +56,10 @@ def draw_instructions(window, size):
                                          ))
 
     # DEFINE LABELS
+    # title
     instructions_label = small_font.render("Instructions", 1, TEXT_COLOUR)
 
+    # Instructions
     line1 = tiny_font.render(
         "1. Look over the controls and key on the right.", 1, TEXT_COLOUR)
 
@@ -104,16 +108,18 @@ def draw_instructions(window, size):
 
 
 def draw_key(window, size):
-    # Background
+    # BACKGROUND
     bg_colour = BG2
 
+    # Measurements, all label placements will be based off these as well
     x = size * 37 // 60
     y = size * 6 // 60
     width = size * 7 // 20
     height = size * 4 // 20
 
+    # Draws outline arround background
     outline_rect(window, size, x, y, width, height)
-
+    # Draws background surface
     pygame.draw.rect(window, bg_colour, (x,
                                          y,
                                          width,
@@ -184,21 +190,24 @@ def draw_key(window, size):
 
 
 def draw_controls(window, size):
-    # Background
+    # BACKGROUND
     bg_colour = BG2
 
+    # Measurements, all label placements will be based off these as well
     x = size * 37 // 60
     y = size * 21 // 60
     width = size * 7 // 20
     height = size * 7 // 40
 
+    # Draws outline arround background
     outline_rect(window, size, x, y, width, height)
-
+    # Draws background surface
     pygame.draw.rect(window, bg_colour, (x,
                                          y,
                                          width,
                                          height
                                          ))
+
     # DEFINE LABELS
     controls_label = small_font.render("Controls", 1, TEXT_COLOUR)
 
@@ -216,6 +225,7 @@ def draw_controls(window, size):
 
     escape1_label = tiny_bold_font.render("Escape:", 1, TEXT_COLOUR)
     escape2_label = tiny_font.render("Return to menu", 1, TEXT_COLOUR)
+
     # LABEL PLACEMENT
     # title
     window.blit(controls_label, (x + size // 80, y + size // 80))
@@ -237,9 +247,6 @@ def draw_controls(window, size):
 
 
 # Main Functions -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-def options_menu(window, size, rows):
-    pass
-
 def run_algorithms(window, size, rows, algorithm):
 
     grid = board.make_grid(rows, size)
