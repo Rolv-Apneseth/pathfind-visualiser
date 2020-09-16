@@ -1,17 +1,19 @@
 import pygame
+import os
 
 # Custom module imports
 import board
 import algorithms
 from buttons import Button
+from dropdown import Dropdown
 
 # COLOURS
 BUTTON1 = (0, 0, 0)  # Black
 BUTTON2 = (255, 255, 255)  # White
 BUTTON3 = (162, 162, 162)  # Silver
-BG_LINE = (255, 255, 255)  # White
-BG = (50, 50, 50)   # dark gray
-BG2 = (100, 100, 100)  # white
+BG = (150, 150, 150)   # grey
+# grey, same as BG but change this for different frame colours
+BG2 = (150, 150, 150)
 OUTLINE_COLOUR = (0, 0, 0)  # black
 TEXT_COLOUR = (0, 0, 0)  # Black
 
@@ -28,12 +30,12 @@ tiny_bold_font = pygame.font.SysFont("arial", 15, bold=True)
 def outline_rect(window, size, x, y, width, height):
     """
     Draws a black rectangle, slightly bigger than the measurements passed in.
-    Use this as a background for another rectangle to give it a black outline. (Just give the measurements for that rectangle)
+    Use this as a background for another rectangle to give it an outline. (Just give the measurements for that rectangle)
     """
     outline_colour = OUTLINE_COLOUR
 
     # outline width
-    extra_size = size // 200
+    extra_size = size // 400
 
     pygame.draw.rect(window, outline_colour, (x - extra_size,
                                               y - extra_size,
@@ -244,6 +246,117 @@ def draw_controls(window, size):
     window.blit(escape2_label, (x + size * 10 // 80, y + size * 12 // 80))
 
 
+def draw_buttons(window, size, rows, xpos, ypos, clicked):
+    """Displays buttons which will each run the program with a specific algorithm."""
+
+    # BACKGROUND
+    draw_background(window,
+                    size,
+                    size // 20,  # x
+                    size * 25 // 40,  # y
+                    size // 2,  # width
+                    size * 29 // 80  # height
+                    )
+
+    # DEFINE BUTTONS
+    # Will contain all the buttons, so they can be looped through in a for loop
+    buttons = []
+
+    # A* pathfinding algorithm
+    a_star_button = Button(BUTTON1,
+                           BUTTON2,
+                           size // 20,
+                           size * 25 // 40,
+                           size * 7 // 16,
+                           size // 15,
+                           lambda: run_algorithms(window, size, rows, "a*"),
+                           text='A* algorithm',
+                           )
+    buttons.append(a_star_button)
+    # Breadth first search algorithm
+    breadth_first_button = Button(BUTTON1,
+                                  BUTTON2,
+                                  size // 20,
+                                  size * 28 // 40,
+                                  size * 7 // 16,
+                                  size // 15,
+                                  lambda: run_algorithms(
+                                      window, size, rows, "breadth first"),
+                                  text='Breadth first search',
+                                  )
+    buttons.append(breadth_first_button)
+    # Depth first search algorithm
+    depth_first_button = Button(BUTTON1,
+                                BUTTON2,
+                                size // 20,
+                                size * 31 // 40,
+                                size * 7 // 16,
+                                size // 15,
+                                lambda: run_algorithms(
+                                    window, size, rows, "depth first"),
+                                text='Depth first search',
+                                )
+    buttons.append(depth_first_button)
+    # Dijkstra's shortest path algorithm
+    dijkstra_button = Button(BUTTON1,
+                             BUTTON2,
+                             size // 20,
+                             size * 34 // 40,
+                             size * 7 // 16,
+                             size // 15,
+                             lambda: run_algorithms(
+                                 window, size, rows, "dijkstra's"),
+                             text="Dijkstra's algorithm",
+                             )
+    buttons.append(dijkstra_button)
+    # Greedy best-first search algorithm
+    best_first_button = Button(BUTTON1,
+                               BUTTON2,
+                               size // 20,
+                               size * 37 // 40,
+                               size * 7 // 16,
+                               size // 15,
+                               lambda: run_algorithms(
+                                   window, size, rows, "best-first"),
+                               text="Greedy best-first search",
+                               )
+    buttons.append(best_first_button)
+
+    # Loop through the buttons and execute their function if they are selected and the mouse has been clicked
+    for button in buttons:
+        button.draw(window, button_font, xpos, ypos)
+
+        if button.is_selected(xpos, ypos):
+            if clicked:
+                button.on_clicked()
+
+
+def draw_options(window, size):
+    # Measurements
+    x = size * 37 // 60
+    y = size * 25 // 40
+    width = size * 7 // 20
+    height = size * 5 // 20
+    # BACKGROUND
+    draw_background(window,
+                    size,
+                    x,
+                    y,
+                    width,
+                    height
+                    )
+
+    # DEFINE LABELS
+    options_label = small_font.render("Options", 1, TEXT_COLOUR)
+
+    rows_label = tiny_font.render("Number of rows/columns:", 1, TEXT_COLOUR)
+
+    # LABEL PLACEMENT
+    window.blit(options_label, (x + size // 80, y + size // 80))
+
+    window.blit(rows_label, (x + size // 80, y + size * 5 // 80))
+
+
 # Main Functions -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 def run_algorithms(window, size, rows, algorithm):
     """Runs the window where the user can customise the maze and execute the chosen algorithm."""
@@ -345,9 +458,6 @@ def main(window, size, rows):
     # Variable to check if the left mouse button has been pressed
     clicked = False
 
-    # Will contain all the buttons, so they can be looped through in a for loop
-    buttons = []
-
     # DEFINE LABELS
     # Title
     choose_label = title_font.render(
@@ -355,66 +465,20 @@ def main(window, size, rows):
     # How to use
     usage_label = title_font.render("How to use:", 1, TEXT_COLOUR)
 
-    # DEFINE BUTTONS
-    # A* pathfinding algorithm
-    a_star_button = Button(BUTTON1,
-                           BUTTON2,
-                           size // 20,
-                           size * 25 // 40,
-                           size * 7 // 16,
-                           size // 15,
-                           lambda: run_algorithms(window, size, rows, "a*"),
-                           text='A* algorithm',
-                           )
-    buttons.append(a_star_button)
-    # Breadth first search algorithm
-    breadth_first_button = Button(BUTTON1,
-                                  BUTTON2,
-                                  size // 20,
-                                  size * 28 // 40,
-                                  size * 7 // 16,
-                                  size // 15,
-                                  lambda: run_algorithms(
-                                      window, size, rows, "breadth first"),
-                                  text='Breadth first search',
-                                  )
-    buttons.append(breadth_first_button)
-    # Depth first search algorithm
-    depth_first_button = Button(BUTTON1,
-                                BUTTON2,
-                                size // 20,
-                                size * 31 // 40,
-                                size * 7 // 16,
-                                size // 15,
-                                lambda: run_algorithms(
-                                    window, size, rows, "depth first"),
-                                text='Depth first search',
-                                )
-    buttons.append(depth_first_button)
-    # Dijkstra's shortest path algorithm
-    dijkstra_button = Button(BUTTON1,
-                             BUTTON2,
-                             size // 20,
-                             size * 34 // 40,
-                             size * 7 // 16,
-                             size // 15,
-                             lambda: run_algorithms(
-                                 window, size, rows, "dijkstra's"),
-                             text="Dijkstra's algorithm",
-                             )
-    buttons.append(dijkstra_button)
-    # Greedy best-first search algorithm
-    best_first_button = Button(BUTTON1,
-                               BUTTON2,
-                               size // 20,
-                               size * 37 // 40,
-                               size * 7 // 16,
-                               size // 15,
-                               lambda: run_algorithms(
-                                   window, size, rows, "best-first"),
-                               text="Greedy best-first search",
-                               )
-    buttons.append(best_first_button)
+    # Dropdown
+    rows_drop = Dropdown(BUTTON1,
+                         BUTTON2,
+                         BUTTON1,
+                         BUTTON2,
+                         size * 67 // 80,
+                         size * 54 // 80,
+                         size // 10,
+                         size // 20
+                         )
+    rows_drop.add_options(("25", None), ("50", None), ("100", None))
+    # local variable to manage whether options list for rows_drop is displayed
+    display_options = False
+    draw_options(window, size)
 
     run = True
     while run:
@@ -424,30 +488,36 @@ def main(window, size, rows):
         draw_key(window, size)
         draw_controls(window, size)
 
+        # get mouse position
+        xpos, ypos = pygame.mouse.get_pos()
+
+        draw_buttons(window, size, rows, xpos, ypos, clicked)
+        draw_options(window, size)
+
         # LABELS
         window.blit(choose_label, (size // 20,
                                    size * 22 // 40
                                    ))
         window.blit(usage_label, (size // 20, size // 40))
 
-        # BUTTONS
-        # get mouse position
-        xpos, ypos = pygame.mouse.get_pos()
-        # draw background for buttons
-        draw_background(window,
-                        size,
-                        size // 20,  # x
-                        size * 25 // 40,  # y
-                        size // 2,  # width
-                        size * 29 // 80  # height
-                        )
-        # Loop through the buttons and execute their function if they are selected and the mouse has been clicked
-        for button in buttons:
-            button.draw(window, button_font, xpos, ypos)
+        # DROPDOWN
+        rows_drop.draw_main(window, button_font, xpos, ypos)
 
-            if button.is_selected(xpos, ypos):
-                if clicked:
-                    button.on_clicked()
+        # Checks if options should be displayed
+        if rows_drop.is_selected_main(xpos, ypos) and clicked and not display_options:
+            display_options = True
+        elif rows_drop.is_selected_main(xpos, ypos) and clicked and display_options:
+            display_options = False
+
+        # If an option is clicked, sets the selected value to the option clicked and closes the options menu
+        if display_options:
+            rows_drop.draw_options(window, button_font, xpos, ypos)
+            for i, option in enumerate(rows_drop.options):
+                if rows_drop.is_selected_option(xpos, ypos, i) and clicked:
+                    rows_drop.selected_option = option[0]
+                    rows = int(option[0])
+                    display_options = False
+
         # Reset clicked value
         clicked = False
 
@@ -465,7 +535,7 @@ if __name__ == "__main__":
     # Pygame Window
     # Window will always be a square so size used instead of width and height
     SIZE = 800
-    ROWS = 50
+    ROWS = 25  # Default number of rows, actual number of rows can be changed within the main loop
 
     WIN = pygame.display.set_mode((SIZE, SIZE))
     pygame.display.set_caption("Pathfinding Algorithms Visualiser")
