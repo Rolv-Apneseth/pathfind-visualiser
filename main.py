@@ -26,8 +26,13 @@ tiny_bold_font = pygame.font.SysFont("arial", 15, bold=True)
 
 # Extra Draw UI Functions -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 def outline_rect(window, size, x, y, width, height):
+    """
+    Draws a black rectangle, slightly bigger than the measurements passed in.
+    Use this as a background for another rectangle to give it a black outline. (Just give the measurements for that rectangle)
+    """
     outline_colour = OUTLINE_COLOUR
 
+    # outline width
     extra_size = size // 200
 
     pygame.draw.rect(window, outline_colour, (x - extra_size,
@@ -38,6 +43,7 @@ def outline_rect(window, size, x, y, width, height):
 
 
 def draw_background(window, size, x, y, width, height):
+    """Draws a frame to contain other ui elements. Has a thin black border."""
     bg_colour = BG2
     # Draws outline arround background
     outline_rect(window, size, x, y, width, height)
@@ -50,6 +56,8 @@ def draw_background(window, size, x, y, width, height):
 
 
 def draw_instructions(window, size):
+    """Draw elements onto the gui which give text instructions on how to use the program."""
+
     # BACKGROUND
     # Measurements, all label placements will be based off these as well
     x = size // 20
@@ -112,6 +120,8 @@ def draw_instructions(window, size):
 
 
 def draw_key(window, size):
+    """Draws elements onto the gui which show the user what each colour node means within the program."""
+
     # BACKGROUND
     # Measurements, all label placements will be based off these as well
     x = size * 37 // 60
@@ -185,6 +195,8 @@ def draw_key(window, size):
 
 
 def draw_controls(window, size):
+    """Draws elements onto the gui which show the user what buttons to press to do what when the program is running."""
+
     # BACKGROUND
     # Measurements, all label placements will be based off these as well
     x = size * 37 // 60
@@ -234,6 +246,7 @@ def draw_controls(window, size):
 
 # Main Functions -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 def run_algorithms(window, size, rows, algorithm):
+    """Runs the window where the user can customise the maze and execute the chosen algorithm."""
 
     grid = board.make_grid(rows, size)
 
@@ -327,6 +340,8 @@ def run_algorithms(window, size, rows, algorithm):
 
 
 def main(window, size, rows):
+    """Runs the main menu window."""
+
     # Variable to check if the left mouse button has been pressed
     clicked = False
 
