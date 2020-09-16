@@ -37,15 +37,8 @@ def outline_rect(window, size, x, y, width, height):
                                               ))
 
 
-def draw_instructions(window, size):
-    # BACKGROUND
+def draw_background(window, size, x, y, width, height):
     bg_colour = BG2
-    # Measurements, all label placements will be based off these as well
-    x = size // 20
-    y = size // 10
-    width = size // 2
-    height = size * 17 // 40
-
     # Draws outline arround background
     outline_rect(window, size, x, y, width, height)
     # Draws background surface
@@ -54,6 +47,17 @@ def draw_instructions(window, size):
                                          width,
                                          height
                                          ))
+
+
+def draw_instructions(window, size):
+    # BACKGROUND
+    # Measurements, all label placements will be based off these as well
+    x = size // 20
+    y = size // 10
+    width = size // 2
+    height = size * 17 // 40
+
+    draw_background(window, size, x, y, width, height)
 
     # DEFINE LABELS
     # title
@@ -109,22 +113,13 @@ def draw_instructions(window, size):
 
 def draw_key(window, size):
     # BACKGROUND
-    bg_colour = BG2
-
     # Measurements, all label placements will be based off these as well
     x = size * 37 // 60
     y = size * 6 // 60
     width = size * 7 // 20
     height = size * 4 // 20
 
-    # Draws outline arround background
-    outline_rect(window, size, x, y, width, height)
-    # Draws background surface
-    pygame.draw.rect(window, bg_colour, (x,
-                                         y,
-                                         width,
-                                         height
-                                         ))
+    draw_background(window, size, x, y, width, height)
 
     # DEFINE LABELS
     key_label = small_font.render("Key", 1, TEXT_COLOUR)
@@ -191,22 +186,13 @@ def draw_key(window, size):
 
 def draw_controls(window, size):
     # BACKGROUND
-    bg_colour = BG2
-
     # Measurements, all label placements will be based off these as well
     x = size * 37 // 60
     y = size * 21 // 60
     width = size * 7 // 20
     height = size * 7 // 40
 
-    # Draws outline arround background
-    outline_rect(window, size, x, y, width, height)
-    # Draws background surface
-    pygame.draw.rect(window, bg_colour, (x,
-                                         y,
-                                         width,
-                                         height
-                                         ))
+    draw_background(window, size, x, y, width, height)
 
     # DEFINE LABELS
     controls_label = small_font.render("Controls", 1, TEXT_COLOUR)
@@ -423,14 +409,24 @@ def main(window, size, rows):
         draw_key(window, size)
         draw_controls(window, size)
 
-        # Labels
+        # LABELS
         window.blit(choose_label, (size // 20,
                                    size * 22 // 40
                                    ))
         window.blit(usage_label, (size // 20, size // 40))
 
-        # Buttons
+        # BUTTONS
+        # get mouse position
         xpos, ypos = pygame.mouse.get_pos()
+        # draw background for buttons
+        draw_background(window,
+                        size,
+                        size // 20,  # x
+                        size * 25 // 40,  # y
+                        size // 2,  # width
+                        size * 29 // 80  # height
+                        )
+        # Loop through the buttons and execute their function if they are selected and the mouse has been clicked
         for button in buttons:
             button.draw(window, button_font, xpos, ypos)
 
