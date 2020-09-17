@@ -1,5 +1,4 @@
 import pygame
-import os
 
 # Custom module imports
 import board
@@ -414,7 +413,10 @@ def run_algorithms(window, size, rows, algorithm):
                 if event.key == pygame.K_c:
                     start = None
                     end = None
-                    grid = board.make_grid(rows, size)
+                    for row in grid:
+                        for node in row:
+                            if not node.is_hard_barrier:
+                                node.reset()
 
             # Starts the chosen algorithm
             if event.type == pygame.KEYDOWN:
