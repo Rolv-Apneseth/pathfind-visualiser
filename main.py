@@ -3,6 +3,7 @@ import pygame
 # Custom module imports
 import board
 import algorithms
+import maze
 from buttons import Button
 from dropdown import Dropdown
 
@@ -245,7 +246,7 @@ def draw_controls(window, size):
     window.blit(escape2_label, (x + size * 10 // 80, y + size * 12 // 80))
 
 
-def draw_buttons(window, size, rows, xpos, ypos, clicked):
+def draw_buttons(window, size, rows, xpos, ypos, clicked, maze_type):
     """Displays buttons which will each run the program with a specific algorithm."""
 
     # BACKGROUND
@@ -268,7 +269,8 @@ def draw_buttons(window, size, rows, xpos, ypos, clicked):
                            size * 25 // 40,
                            size * 7 // 16,
                            size // 15,
-                           lambda: run_algorithms(window, size, rows, "a*"),
+                           lambda: run_algorithms(
+                               window, size, rows, "a*", maze_type),
                            text='A* algorithm',
                            )
     buttons.append(a_star_button)
@@ -280,7 +282,7 @@ def draw_buttons(window, size, rows, xpos, ypos, clicked):
                                   size * 7 // 16,
                                   size // 15,
                                   lambda: run_algorithms(
-                                      window, size, rows, "breadth first"),
+                                      window, size, rows, "breadth first", maze_type),
                                   text='Breadth first search',
                                   )
     buttons.append(breadth_first_button)
@@ -292,7 +294,7 @@ def draw_buttons(window, size, rows, xpos, ypos, clicked):
                                 size * 7 // 16,
                                 size // 15,
                                 lambda: run_algorithms(
-                                    window, size, rows, "depth first"),
+                                    window, size, rows, "depth first", maze_type),
                                 text='Depth first search',
                                 )
     buttons.append(depth_first_button)
@@ -304,7 +306,7 @@ def draw_buttons(window, size, rows, xpos, ypos, clicked):
                              size * 7 // 16,
                              size // 15,
                              lambda: run_algorithms(
-                                 window, size, rows, "dijkstra's"),
+                                 window, size, rows, "dijkstra's", maze_type),
                              text="Dijkstra's algorithm",
                              )
     buttons.append(dijkstra_button)
@@ -316,7 +318,7 @@ def draw_buttons(window, size, rows, xpos, ypos, clicked):
                                size * 7 // 16,
                                size // 15,
                                lambda: run_algorithms(
-                                   window, size, rows, "best-first"),
+                                   window, size, rows, "best-first", maze_type),
                                text="Greedy best-first search",
                                )
     buttons.append(best_first_button)
@@ -349,18 +351,23 @@ def draw_options(window, size):
     options_label = small_font.render("Options", 1, TEXT_COLOUR)
 
     rows_label = tiny_font.render("Number of rows/columns:", 1, TEXT_COLOUR)
+    maze_type_label = tiny_font.render("Type of maze to use:", 1, TEXT_COLOUR)
 
     # LABEL PLACEMENT
     window.blit(options_label, (x + size // 80, y + size // 80))
 
     window.blit(rows_label, (x + size // 80, y + size * 5 // 80))
+    window.blit(maze_type_label, (x + size // 80, y + size * 10 // 80))
 
 
 # Main Functions -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-def run_algorithms(window, size, rows, algorithm):
+def run_algorithms(window, size, rows, algorithm, maze_type):
     """Runs the window where the user can customise the maze and execute the chosen algorithm."""
 
     grid = board.make_grid(rows, size)
+
+    if maze_type == "Random":
+        grid = maze.completely_random(grid)
 
     start = None
     end = None
@@ -460,6 +467,9 @@ def main(window, size, rows):
     # Variable to check if the left mouse button has been pressed
     clicked = False
 
+    # Variable to set the maze type for the grid
+    maze_type = None
+
     # DEFINE LABELS
     # Title
     choose_label = title_font.render(
@@ -467,7 +477,8 @@ def main(window, size, rows):
     # How to use
     usage_label = title_font.render("How to use:", 1, TEXT_COLOUR)
 
-    # Dropdown
+    # DROPDOWNS
+    # rows
     rows_drop = Dropdown(BUTTON1,
                          BUTTON2,
                          BUTTON1,
@@ -477,10 +488,24 @@ def main(window, size, rows):
                          size // 10,
                          size // 20
                          )
+    # No function needed for each option as it only changes a variable so None used
     rows_drop.add_options(("25", None), ("50", None), ("100", None))
-    # local variable to manage whether options list for rows_drop is displayed
-    display_options = False
-    draw_options(window, size)
+    # Local variable to manage whether options list for rows_drop is displayed
+    display_rows_options = False
+
+    # maze type
+    maze_type_drop = Dropdown(BUTTON1,
+                              BUTTON2,
+                              BUTTON1,
+                              BUTTON2,
+                              size * 67 // 80,
+                              size * 59 // 80,
+                              size // 10,
+                              size // 20
+                              )
+    maze_type_drop.add_options(("None", None), ("Random", None))
+    # Local variable to manage whether options list for maze_type_drop is displayed
+    display_maze_options = False
 
     run = True
     while run:
@@ -493,7 +518,7 @@ def main(window, size, rows):
         # get mouse position
         xpos, ypos = pygame.mouse.get_pos()
 
-        draw_buttons(window, size, rows, xpos, ypos, clicked)
+        draw_buttons(window, size, rows, xpos, ypos, clicked, maze_type)
         draw_options(window, size)
 
         # LABELS
@@ -503,30 +528,52 @@ def main(window, size, rows):
         window.blit(usage_label, (size // 20, size // 40))
 
         # DROPDOWN
+        # Rows
         rows_drop.draw_main(window, button_font, xpos, ypos)
 
-        # Checks if options should be displayed
-        if rows_drop.is_selected_main(xpos, ypos) and clicked and not display_options:
-            display_options = True
-        elif rows_drop.is_selected_main(xpos, ypos) and clicked and display_options:
-            display_options = False
+        # Checks if row options should be displayed
+        if rows_drop.is_selected_main(xpos, ypos) and clicked and not display_rows_options:
+            display_rows_options = True
+        elif rows_drop.is_selected_main(xpos, ypos) and clicked and display_rows_options:
+            display_rows_options = False
 
-        # If an option is clicked, sets the selected value to the option clicked and closes the options menu
-        if display_options:
+        # If a row option is clicked, sets the selected value to the row option clicked and closes the row options dropdown
+        if display_rows_options:
             rows_drop.draw_options(window, button_font, xpos, ypos)
             for i, option in enumerate(rows_drop.options):
                 if rows_drop.is_selected_option(xpos, ypos, i) and clicked:
                     rows_drop.selected_option = option[0]
                     rows = int(option[0])
-                    display_options = False
+                    display_rows_options = False
+
+        # Maze type
+        # Not displayed if row options are displayed so they do not overlap
+        if not display_rows_options:
+            maze_type_drop.draw_main(window, button_font, xpos, ypos)
+
+            # Checks if maze options should be displayed
+            if maze_type_drop.is_selected_main(xpos, ypos) and clicked and not display_maze_options:
+                display_maze_options = True
+            elif maze_type_drop.is_selected_main(xpos, ypos) and clicked and display_maze_options:
+                display_maze_options = False
+
+            # If a maze option is clicked, sets the selected value to the maze option clicked and closes the maze options dropdown
+            if display_maze_options:
+                maze_type_drop.draw_options(window, button_font, xpos, ypos)
+                for i, option in enumerate(maze_type_drop.options):
+                    if maze_type_drop.is_selected_option(xpos, ypos, i) and clicked:
+                        maze_type_drop.selected_option = option[0]
+                        maze_type = option[0]
+                        display_maze_options = False
 
         # Reset clicked value
         clicked = False
 
-        # Events
+        # EVENTS
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
+            # Used in conjunction with mous position to detect when certain gui elements have been clicked
             if pygame.mouse.get_pressed()[0]:
                 clicked = True
 
