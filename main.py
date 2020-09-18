@@ -368,7 +368,7 @@ def run_algorithms(window, size, rows, algorithm, maze_type):
 
     if maze_type == "Random":
         grid = maze.completely_random(grid)
-    if maze_type == "Basic Swirl":
+    if maze_type == "Swirl":
         grid = maze.basic_swirl(grid)
 
     start = None
@@ -506,7 +506,7 @@ def main(window, size, rows):
                               size // 20
                               )
     maze_type_drop.add_options(
-        ("None", None), ("Random", None), ("Basic Swirl", None))
+        ("None", None), ("Random", None), ("Swirl", None))
     # Local variable to manage whether options list for maze_type_drop is displayed
     display_maze_options = False
 

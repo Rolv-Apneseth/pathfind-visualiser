@@ -15,9 +15,8 @@ def generate_blank_path(grid):
 
     return {node: None for row in grid for node in row}
 
+
 # Maze type functions -----------------------------------------------------------------------------------------------------------------------------
-
-
 def completely_random(grid):
     """Generates a completely random maze, where every node has a 1 in 4 chance of becoming a barrier."""
 
