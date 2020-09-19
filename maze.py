@@ -16,6 +16,40 @@ def generate_blank_path(grid):
     return {node: None for row in grid for node in row}
 
 
+# MOVEMENT
+# Functions to select next node in a certain direction, if that node is valid
+def l_node(grid, node):
+    """Selects node to the left if available."""
+
+    if node.row - 2 >= 0 and not grid[node.row - 1][node.col].is_hard_barrier:
+        return grid[node.row - 1][node.col]
+    return False
+
+
+def r_node(grid, node):
+    """Selects node to the right if available."""
+
+    if node.row + 2 <= len(grid[node.row]) and not grid[node.row + 1][node.col].is_hard_barrier:
+        return grid[node.row + 1][node.col]
+    return False
+
+
+def u_node(grid, node):
+    """Selects node above given node if available."""
+
+    if node.col - 2 >= 0 and not grid[node.row][node.col - 1].is_hard_barrier:
+        return grid[node.row][node.col - 1]
+    return False
+
+
+def d_node(grid, node):
+    """Selects node below given node if available."""
+
+    if node.col + 2 <= len(grid) and not grid[node.row][node.col + 1].is_hard_barrier:
+        return grid[node.row][node.col + 1]
+    return False
+
+
 # Maze type functions -----------------------------------------------------------------------------------------------------------------------------
 def completely_random(grid):
     """Generates a completely random maze, where every node has a 1 in 4 chance of becoming a barrier."""
@@ -30,41 +64,11 @@ def completely_random(grid):
 def basic_swirl(grid):
     """Generates a simple swirl type maze."""
 
+    # List containing the movement helper functions to make them easy to iterate over
+    directions = [r_node, d_node, l_node, u_node]
+
     # Defines which nodes have been visited, used in the one_direction function
     path = generate_blank_path(grid)
-
-    # MOVEMENT
-    # Functions to select next node in a certain direction, if that node is valid
-    def l_node(node):
-        """Selects node to the left if available."""
-
-        if node.row - 2 >= 0 and not grid[node.row - 1][node.col].is_hard_barrier:
-            return grid[node.row - 1][node.col]
-        return False
-
-    def r_node(node):
-        """Selects node to the right if available."""
-
-        if node.row + 2 <= len(grid[node.row]) and not grid[node.row + 1][node.col].is_hard_barrier:
-            return grid[node.row + 1][node.col]
-        return False
-
-    def u_node(node):
-        """Selects node above given node if available."""
-
-        if node.col - 2 >= 0 and not grid[node.row][node.col - 1].is_hard_barrier:
-            return grid[node.row][node.col - 1]
-        return False
-
-    def d_node(node):
-        """Selects node below given node if available."""
-
-        if node.col + 2 <= len(grid) and not grid[node.row][node.col + 1].is_hard_barrier:
-            return grid[node.row][node.col + 1]
-        return False
-
-    # List containing the above functions to make them easy to iterate over
-    directions = [r_node, d_node, l_node, u_node]
 
     def one_direction(grid, direction, start):
         """Uses a given movement function to keep moving in a specific direction until it hits a barrier."""
@@ -80,7 +84,7 @@ def basic_swirl(grid):
             # Saving the current to a different variable
             prev_node = node
             # Checks next node in given direction
-            node = direction(node)
+            node = direction(grid, node)
             path[node] = prev_node
 
             # If next node is not valid:
@@ -101,6 +105,7 @@ def basic_swirl(grid):
     current = start
     # Loop breaks as soon as the one direction function returns False
     while current:
+        # Iterates over movement functions and breaks loop if any of them return false
         for direction in directions:
             previous = current
             current = one_direction(grid, direction, previous)
