@@ -370,6 +370,8 @@ def run_algorithms(window, size, rows, algorithm, maze_type):
         grid = maze.completely_random(grid)
     if maze_type == "Swirl":
         grid = maze.basic_swirl(grid)
+    if maze_type == "Imperfect":
+        grid = maze.imperfect(grid)
 
     start = None
     end = None
@@ -491,7 +493,7 @@ def main(window, size, rows):
                          size // 20
                          )
     # No function needed for each option as it only changes a variable so None used
-    rows_drop.add_options(("25", None), ("50", None), ("100", None))
+    rows_drop.add_options(("25", None), ("75", None), ("125", None))
     # Local variable to manage whether options list for rows_drop is displayed
     display_rows_options = False
 
@@ -506,7 +508,7 @@ def main(window, size, rows):
                               size // 20
                               )
     maze_type_drop.add_options(
-        ("None", None), ("Random", None), ("Swirl", None))
+        ("None", None), ("Random", None), ("Swirl", None), ("Imperfect", None))
     # Local variable to manage whether options list for maze_type_drop is displayed
     display_maze_options = False
 
@@ -586,7 +588,7 @@ def main(window, size, rows):
 if __name__ == "__main__":
     # Pygame Window
     # Window will always be a square so size used instead of width and height
-    SIZE = 800
+    SIZE = 750
     ROWS = 25  # Default number of rows, actual number of rows can be changed within the main loop
 
     WIN = pygame.display.set_mode((SIZE, SIZE))
