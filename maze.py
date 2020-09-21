@@ -24,6 +24,44 @@ def generate_blank_path(grid):
     return {node: None for row in grid for node in row}
 
 
+def make_wall(grid, start, direction, path):
+    """Generates a wall in a given direction from a starting node."""
+
+    # Will contain all the nodes changed (so one can be made open again using make_opening)
+    wall = []
+
+    node = start
+    # Loop ends as soon as the next node in line is a barrier
+    while node:
+        # Must keep updating neighbours because barriers are getting added
+        node.update_neighbours(grid)
+        # Saving the current to a different variable
+        prev_node = node
+        # Checks next node in given direction
+        node = direction(grid, prev_node)
+
+        # Make previous node barrier and add to walls list
+        prev_node.update_neighbours(grid)
+        make_node_barrier(prev_node)
+        wall.append(prev_node)
+
+        # Update path if node is valid, or break the loop if it has been visited before
+        if node:
+            if path[node]:
+                break
+            path[node] = prev_node
+
+    if start in wall:
+        wall.remove(start)
+    return wall
+
+
+def make_opening(wall):
+    """Takes an array of nodes which make up a wall and opens a random node."""
+
+    node_reset(random.choice(wall))
+
+
 # MOVEMENT
 # Functions to select next node in a certain direction, if that node is valid
 def l_node(grid, node):
@@ -150,48 +188,12 @@ def imperfect(grid):
     def choose_node(grid):
         """Chooses a random, unvisited node for a wall to be drawn from."""
 
-        while True:
+        while available_nodes:
             node = available_nodes.pop()
             node.update_neighbours(grid)
-            if not path[node] and not node.row % 2 and not node.col % 2 and not node.is_hard_barrier and len(node.neighbours) > 2 and not node.is_hard_barrier:
-                break
-            if not available_nodes:
-                return False
-        return node
-
-    def make_wall(grid, start, direction):
-        """Generates a wall in a given direction from a starting node."""
-
-        # Will contain all the nodes changed (so one can be made open again using make_opening)
-        wall = []
-
-        node = start
-        # Loop ends as soon as the next node in line is a barrier
-        while node:
-            # Must keep updating neighbours because barriers are getting added
-            node.update_neighbours(grid)
-            # Saving the current to a different variable
-            prev_node = node
-            # Checks next node in given direction
-            node = direction(grid, prev_node)
-
-            # Make previous node barrier and add to walls list
-            make_node_barrier(prev_node)
-            wall.append(prev_node)
-
-            # Update path if node is valid, or break the loop if it has been visited before
-            if node:
-                if path[node]:
-                    break
-                path[node] = prev_node
-
-        wall.remove(start)
-        return wall
-
-    def make_opening(wall):
-        """Takes an array of nodes which make up a wall and opens a random node."""
-
-        node_reset(random.choice(wall))
+            if not path[node] and not node.row % 2 and not node.col % 2 and not node.is_hard_barrier and len(node.neighbours) > 3 and not node.is_hard_barrier:
+                return node
+        return None
 
     # Loop ends as soon as there is no node left to go over (from choose_node)
     while True:
@@ -201,7 +203,7 @@ def imperfect(grid):
 
         # Makes wall in each direction from the start node and opens a single node on each wall
         for direction in directions:
-            wall = make_wall(grid, start, direction)
+            wall = make_wall(grid, start, direction, path)
             if not wall:
                 continue
             make_opening(wall)
