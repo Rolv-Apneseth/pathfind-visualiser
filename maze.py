@@ -217,6 +217,10 @@ def simple_maze(grid):
     Makes every odd row and column node into a barrier, then loops through the unaffected nodes and resets
     2 adjacent barrier nodes at random.
 
+    This algorithm was inspired by binary tree maze generation, but since the walls/barrierrs on this program
+    are full cells rather than space between adjacent cells I had to play around with it and came up with this
+    to take its place.
+
     'Path Carver' algorithm as it starts with walls and then knocks down walls to connect nodes.
     """
 
