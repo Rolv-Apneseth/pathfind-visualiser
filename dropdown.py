@@ -6,7 +6,7 @@ class Dropdown():
 
         self.menu_colour1 = menu_colour1
         self.menu_colour2 = menu_colour2
-        # Two colous since the colours alternate depending on whether the mouse
+        # Two colours since the colours alternate depending on whether the mouse
         # is hovering over the option or not
         self.option_colour1 = option_colour1
         self.option_colour2 = option_colour2
@@ -25,8 +25,9 @@ class Dropdown():
             self.options.append(option)
         self.selected_option = options[0][0]
 
-    # Display dropdown menu button
     def draw_main(self, window, font, xpos, ypos):
+        """Display dropdown menu button."""
+
         if not self.is_selected_main(xpos, ypos):
             # Text
             name_label = font.render(self.selected_option,
@@ -54,8 +55,8 @@ class Dropdown():
             window.blit(name_label, (self.x + (self.width // 2 - name_label.get_width() // 2),
                                      self.y + (self.height // 2 - name_label.get_height() // 2)))
 
-    # Display actual dropdown menu with options
     def draw_options(self, window, font, xpos, ypos):
+        """Display actual dropdown menu with options."""
 
         for i, option in enumerate(self.options):
             if not self.is_selected_option(xpos, ypos, i):
@@ -79,16 +80,17 @@ class Dropdown():
                 window.blit(option_label, (self.x + (self.width // 2 - option_label.get_width() // 2),
                                            self.y + (self.height // 2 - option_label.get_height() // 2) + self.height * i + self.height))
 
-    # Detect when the mouse is within the 'select mode' box
-
     def is_selected_main(self, xpos, ypos):
+        """Detect when the mouse is within the 'select mode' box."""
+
         if self.x < xpos < self.x + self.width and self.y < ypos < self.y + self.height:
             return True
         else:
             return False
-    # Detect when the mouse is within the option list
 
     def is_selected_option(self, xpos, ypos, i):
+        """Detect when the mouse is within the option list."""
+
         if self.x < xpos < self.x + self.width and self.y + self.height * (i + 1) < ypos < self.y + self.height + (i + 1) * self.height:
             return True
         else:
