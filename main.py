@@ -101,24 +101,29 @@ def draw_instructions(window, size):
     line11 = tiny_font.render(
         "      Hit the esc key to return to the main menu.", 1, TEXT_COLOUR)
 
+    line12 = tiny_font.render(
+        "Don't forget to try out different row sizes and mazes too!", 1, TEXT_COLOUR)
+
     # LABEL PLACEMENT
     window.blit(instructions_label, (x + size // 80, y + size // 80))
 
-    window.blit(line1, (x + size // 80, y + size * 5 // 80))
+    window.blit(line1, (x + size // 80, y + size * 4 // 80))
 
-    window.blit(line2, (x + size // 80, y + size * 8 // 80))
-    window.blit(line3, (x + size // 80, y + size * 10 // 80))
+    window.blit(line2, (x + size // 80, y + size * 7 // 80))
+    window.blit(line3, (x + size // 80, y + size * 9 // 80))
 
-    window.blit(line4, (x + size // 80, y + size * 13 // 80))
-    window.blit(line5, (x + size // 80, y + size * 15 // 80))
+    window.blit(line4, (x + size // 80, y + size * 12 // 80))
+    window.blit(line5, (x + size // 80, y + size * 14 // 80))
 
-    window.blit(line6, (x + size // 80, y + size * 18 // 80))
-    window.blit(line7, (x + size // 80, y + size * 20 // 80))
+    window.blit(line6, (x + size // 80, y + size * 17 // 80))
+    window.blit(line7, (x + size // 80, y + size * 19 // 80))
 
-    window.blit(line8, (x + size // 80, y + size * 23 // 80))
-    window.blit(line9, (x + size // 80, y + size * 25 // 80))
-    window.blit(line10, (x + size // 80, y + size * 27 // 80))
-    window.blit(line11, (x + size // 80, y + size * 29 // 80))
+    window.blit(line8, (x + size // 80, y + size * 22 // 80))
+    window.blit(line9, (x + size // 80, y + size * 24 // 80))
+    window.blit(line10, (x + size // 80, y + size * 26 // 80))
+    window.blit(line11, (x + size // 80, y + size * 28 // 80))
+
+    window.blit(line12, (x + size // 80, y + size * 31 // 80))
 
 
 def draw_key(window, size):
