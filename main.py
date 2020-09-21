@@ -493,7 +493,7 @@ def main(window, size, rows):
                          size // 20
                          )
     # No function needed for each option as it only changes a variable so None used
-    rows_drop.add_options(("25", None), ("75", None), ("125", None))
+    rows_drop.add_options(("25", None), ("55", None), ("75", None))
     # Local variable to manage whether options list for rows_drop is displayed
     display_rows_options = False
 
@@ -588,7 +588,7 @@ def main(window, size, rows):
 if __name__ == "__main__":
     # Pygame Window
     # Window will always be a square so size used instead of width and height
-    SIZE = 750
+    SIZE = 825
     ROWS = 25  # Default number of rows, actual number of rows can be changed within the main loop
 
     WIN = pygame.display.set_mode((SIZE, SIZE))
