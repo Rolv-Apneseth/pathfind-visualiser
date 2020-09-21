@@ -372,6 +372,8 @@ def run_algorithms(window, size, rows, algorithm, maze_type):
         grid = maze.basic_swirl(grid)
     if maze_type == "Imperfect":
         grid = maze.imperfect(grid)
+    if maze_type == "Simple":
+        grid = maze.simple_maze(grid)
 
     start = None
     end = None
@@ -490,7 +492,7 @@ def main(window, size, rows):
                          size * 67 // 80,
                          size * 54 // 80,
                          size // 10,
-                         size // 20
+                         size // 25
                          )
     # No function needed for each option as it only changes a variable so None used
     rows_drop.add_options(("25", None), ("55", None), ("75", None))
@@ -505,10 +507,10 @@ def main(window, size, rows):
                               size * 67 // 80,
                               size * 59 // 80,
                               size // 10,
-                              size // 20
+                              size // 25
                               )
     maze_type_drop.add_options(
-        ("None", None), ("Random", None), ("Swirl", None), ("Imperfect", None))
+        ("None", None), ("Random", None), ("Swirl", None), ("Imperfect", None), ("Simple", None))
     # Local variable to manage whether options list for maze_type_drop is displayed
     display_maze_options = False
 

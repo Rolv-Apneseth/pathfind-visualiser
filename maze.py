@@ -209,3 +209,40 @@ def imperfect(grid):
             make_opening(wall)
 
     return grid
+
+
+def simple_maze(grid):
+    """
+    Very simple form of maze generation.
+    Makes every odd row and column node into a barrier, then loops through the unaffected nodes and resets
+    2 adjacent barrier nodes at random.
+
+    'Path Carver' algorithm as it starts with walls and then knocks down walls to connect nodes.
+    """
+
+    # Goes through odd rows and columns and makes all of those nodes barriers
+    for i, row in enumerate(grid):
+        if not i % 2:
+            for node in row:
+                make_node_barrier(node)
+        else:
+            for j, node in enumerate(row):
+                if not j % 2:
+                    make_node_barrier(node)
+
+    # Goes  through all the even rows and columns (currently open nodes surrounded by barrier nodes)
+    # and chooses, at random, 2 adjacent barrier nodes and resets them
+    for i, row in enumerate(grid):
+        if i % 2:
+            for j, node in enumerate(row):
+                if j % 2:
+                    # Loops twice to select 2 nodes
+                    for _ in range(2):
+                        # Nodes chosen from directions: up, down
+                        node = random.choice([grid[i][j - 1],
+                                              grid[i][j + 1],
+                                              grid[i + 1][j],
+                                              grid[i - 1][j]
+                                              ])
+                        node_reset(node)
+    return grid
