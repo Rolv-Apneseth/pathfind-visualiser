@@ -342,7 +342,7 @@ def draw_options(window, size):
     x = size * 37 // 60
     y = size * 25 // 40
     width = size * 7 // 20
-    height = size * 5 // 20
+    height = size * 29 // 80
     # BACKGROUND
     draw_background(window,
                     size,
