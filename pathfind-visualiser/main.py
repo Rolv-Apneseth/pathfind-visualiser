@@ -1,11 +1,11 @@
 import pygame
 
 # Custom module imports
-import board
-import algorithms
-import maze
-from buttons import Button
-from dropdown import Dropdown
+import assets.board
+import assets.algorithms
+import assets.maze
+from assets.buttons import Button
+from assets.dropdown import Dropdown
 
 # COLOURS
 BUTTON1 = (0, 0, 0)  # Black
@@ -164,41 +164,41 @@ def draw_key(window, size):
 
     # SQUARES
     # start
-    pygame.draw.rect(window, board.START, (x + size // 80,
-                                           y + size * 4 // 80,
-                                           size // 50,
-                                           size // 50
-                                           ))
+    pygame.draw.rect(window, assets.board.START, (x + size // 80,
+                                                  y + size * 4 // 80,
+                                                  size // 50,
+                                                  size // 50
+                                                  ))
     # end
-    pygame.draw.rect(window, board.END, (x + size * 14 // 80,
-                                         y + size * 4 // 80,
-                                         size // 50,
-                                         size // 50
-                                         ))
+    pygame.draw.rect(window, assets.board.END, (x + size * 14 // 80,
+                                                y + size * 4 // 80,
+                                                size // 50,
+                                                size // 50
+                                                ))
     # barrier
-    pygame.draw.rect(window, board.BARRIER, (x + size // 80,
-                                             y + size * 8 // 80,
-                                             size // 50,
-                                             size // 50
-                                             ))
+    pygame.draw.rect(window, assets.board.BARRIER, (x + size // 80,
+                                                    y + size * 8 // 80,
+                                                    size // 50,
+                                                    size // 50
+                                                    ))
     # path
-    pygame.draw.rect(window, board.PATH, (x + size * 14 // 80,
-                                          y + size * 8 // 80,
-                                          size // 50,
-                                          size // 50
-                                          ))
+    pygame.draw.rect(window, assets.board.PATH, (x + size * 14 // 80,
+                                                 y + size * 8 // 80,
+                                                 size // 50,
+                                                 size // 50
+                                                 ))
     # open
-    pygame.draw.rect(window, board.OPEN, (x + size // 80,
-                                          y + size * 12 // 80,
-                                          size // 50,
-                                          size // 50
-                                          ))
+    pygame.draw.rect(window, assets.board.OPEN, (x + size // 80,
+                                                 y + size * 12 // 80,
+                                                 size // 50,
+                                                 size // 50
+                                                 ))
     # closed
-    pygame.draw.rect(window, board.CLOSED, (x + size * 14 // 80,
-                                            y + size * 12 // 80,
-                                            size // 50,
-                                            size // 50
-                                            ))
+    pygame.draw.rect(window, assets.board.CLOSED, (x + size * 14 // 80,
+                                                   y + size * 12 // 80,
+                                                   size // 50,
+                                                   size // 50
+                                                   ))
 
 
 def draw_controls(window, size):
@@ -369,16 +369,16 @@ def draw_options(window, size):
 def run_algorithms(window, size, rows, algorithm, maze_type):
     """Runs the window where the user can customise the maze and execute the chosen algorithm."""
 
-    grid = board.make_grid(rows, size)
+    grid = assets.board.make_grid(rows, size)
 
     if maze_type == "Random":
-        grid = maze.completely_random(grid)
+        grid = assets.maze.completely_random(grid)
     if maze_type == "Swirl":
-        grid = maze.basic_swirl(grid)
+        grid = assets.maze.basic_swirl(grid)
     if maze_type == "Imperfect":
-        grid = maze.imperfect(grid)
+        grid = assets.maze.imperfect(grid)
     if maze_type == "Simple":
-        grid = maze.simple_maze(grid)
+        grid = assets.maze.simple_maze(grid)
 
     start = None
     end = None
@@ -388,7 +388,7 @@ def run_algorithms(window, size, rows, algorithm, maze_type):
     started = False
 
     while run:
-        board.draw_board(window, grid, rows, size)
+        assets.board.draw_board(window, grid, rows, size)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 quit()
@@ -403,7 +403,7 @@ def run_algorithms(window, size, rows, algorithm, maze_type):
             # Changing nodes
             if pygame.mouse.get_pressed()[0]:  # left click
                 pos = pygame.mouse.get_pos()
-                row, col = board.get_clicked_position(pos, rows, size)
+                row, col = assets.board.get_clicked_position(pos, rows, size)
                 node = grid[row][col]
                 if not start and node != end and not node.is_hard_barrier:
                     start = node
@@ -415,7 +415,7 @@ def run_algorithms(window, size, rows, algorithm, maze_type):
                     node.make_barrier()
             elif pygame.mouse.get_pressed()[2]:  # right click
                 pos = pygame.mouse.get_pos()
-                row, col = board.get_clicked_position(pos, rows, size)
+                row, col = assets.board.get_clicked_position(pos, rows, size)
                 node = grid[row][col]
                 if not node.is_hard_barrier:
                     node.reset()
@@ -449,24 +449,24 @@ def run_algorithms(window, size, rows, algorithm, maze_type):
                     # Lambda function allows function with these perimeters to be called over and over without having to assign another function
                     # specifically to that
                     if algorithm == "a*":
-                        algorithms.a_star_algorithm(lambda: board.draw_board(window, grid,
-                                                                             rows, size), grid, start, end)
+                        assets.algorithms.a_star_algorithm(lambda: assets.board.draw_board(window, grid,
+                                                                                           rows, size), grid, start, end)
 
                     if algorithm == "breadth first":
-                        algorithms.breadth_first_search(lambda: board.draw_board(window, grid,
-                                                                                 rows, size), grid, start, end)
+                        assets.algorithms.breadth_first_search(lambda: assets.board.draw_board(window, grid,
+                                                                                               rows, size), grid, start, end)
 
                     if algorithm == "depth first":
-                        algorithms.depth_first_search(lambda: board.draw_board(window, grid,
-                                                                               rows, size), grid, start, end)
+                        assets.algorithms.depth_first_search(lambda: assets.board.draw_board(window, grid,
+                                                                                             rows, size), grid, start, end)
 
                     if algorithm == "dijkstra's":
-                        algorithms.dijkstras(lambda: board.draw_board(window, grid,
-                                                                      rows, size), grid, start, end)
+                        assets.algorithms.dijkstras(lambda: assets.board.draw_board(window, grid,
+                                                                                    rows, size), grid, start, end)
 
                     if algorithm == "best-first":
-                        algorithms.best_first(lambda: board.draw_board(window, grid,
-                                                                       rows, size), grid, start, end)
+                        assets.algorithms.best_first(lambda: assets.board.draw_board(window, grid,
+                                                                                     rows, size), grid, start, end)
 
                     # Reset started variable so that user can again give commands
                     started = False
