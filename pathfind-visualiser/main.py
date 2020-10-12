@@ -8,14 +8,14 @@ from assets.buttons import Button
 from assets.dropdown import Dropdown
 
 # COLOURS
-BUTTON1 = (0, 0, 0)  # Black
-BUTTON2 = (255, 255, 255)  # White
-BUTTON3 = (162, 162, 162)  # Silver
-BG = (150, 150, 150)   # grey
-# grey, same as BG but change this for different frame colours
+BUTTON1 = (0, 0, 0)
+BUTTON2 = (255, 255, 255) 
+BUTTON3 = (162, 162, 162) 
+BG = (150, 150, 150) 
+# Same as BG but change this for different frame colours
 BG2 = (150, 150, 150)
-OUTLINE_COLOUR = (0, 0, 0)  # black
-TEXT_COLOUR = (0, 0, 0)  # Black
+OUTLINE_COLOUR = (0, 0, 0)
+TEXT_COLOUR = (0, 0, 0)
 
 # FONTS
 pygame.font.init()
@@ -28,8 +28,7 @@ tiny_bold_font = pygame.font.SysFont("arial", 15, bold=True)
 
 # Extra Draw UI Functions -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 def outline_rect(window, size, x, y, width, height):
-    """
-    Draws a black rectangle, slightly bigger than the measurements passed in.
+    """Draws a black rectangle, slightly bigger than the measurements passed in.
     Use this as a background for another rectangle to give it an outline. (Just give the measurements for that rectangle)
     """
     outline_colour = OUTLINE_COLOUR
@@ -276,7 +275,7 @@ def draw_buttons(window, size, rows, xpos, ypos, clicked, maze_type):
                            size // 15,
                            lambda: run_algorithms(
                                window, size, rows, "a*", maze_type),
-                           text='A* algorithm',
+                           text='A* Search Algorithm',
                            )
     buttons.append(a_star_button)
     # Breadth first search algorithm
@@ -288,7 +287,7 @@ def draw_buttons(window, size, rows, xpos, ypos, clicked, maze_type):
                                   size // 15,
                                   lambda: run_algorithms(
                                       window, size, rows, "breadth first", maze_type),
-                                  text='Breadth first search',
+                                  text='Breadth-First Search',
                                   )
     buttons.append(breadth_first_button)
     # Depth first search algorithm
@@ -300,7 +299,7 @@ def draw_buttons(window, size, rows, xpos, ypos, clicked, maze_type):
                                 size // 15,
                                 lambda: run_algorithms(
                                     window, size, rows, "depth first", maze_type),
-                                text='Depth first search',
+                                text='Depth-First Search',
                                 )
     buttons.append(depth_first_button)
     # Dijkstra's shortest path algorithm
@@ -312,7 +311,7 @@ def draw_buttons(window, size, rows, xpos, ypos, clicked, maze_type):
                              size // 15,
                              lambda: run_algorithms(
                                  window, size, rows, "dijkstra's", maze_type),
-                             text="Dijkstra's algorithm",
+                             text="Dijkstra's Algorithm",
                              )
     buttons.append(dijkstra_button)
     # Greedy best-first search algorithm
@@ -324,7 +323,7 @@ def draw_buttons(window, size, rows, xpos, ypos, clicked, maze_type):
                                size // 15,
                                lambda: run_algorithms(
                                    window, size, rows, "best-first", maze_type),
-                               text="Greedy best-first search",
+                               text="Greedy Best-First Search",
                                )
     buttons.append(best_first_button)
 
@@ -338,11 +337,13 @@ def draw_buttons(window, size, rows, xpos, ypos, clicked, maze_type):
 
 
 def draw_options(window, size):
+    """Draws option elements onto the gui (labels for row and maze dropdowns which are defined in main())"""
     # Measurements
     x = size * 37 // 60
     y = size * 25 // 40
     width = size * 7 // 20
     height = size * 29 // 80
+
     # BACKGROUND
     draw_background(window,
                     size,
@@ -367,7 +368,7 @@ def draw_options(window, size):
 
 # Main Functions -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 def run_algorithms(window, size, rows, algorithm, maze_type):
-    """Runs the window where the user can customise the maze and execute the chosen algorithm."""
+    """Runs the maze window, where the chosen algorithm can be executed"""
 
     grid = assets.board.make_grid(rows, size)
 
@@ -396,7 +397,7 @@ def run_algorithms(window, size, rows, algorithm, maze_type):
                 if event.key == pygame.K_ESCAPE:
                     run = False
 
-            # If algorithm has started, does not allow the user to change nodes
+            # If algorithm has started, does not allow the user to give commands
             if started:
                 continue
 
@@ -439,15 +440,13 @@ def run_algorithms(window, size, rows, algorithm, maze_type):
             # Starts the chosen algorithm
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE and start and end and not started:
-                    # Prevents user from starting the search again while a search is underway
                     started = True
-                    # Add neighbours to each node, not including barriers
+                    # Update possible neighbours for every node
                     for row in grid:
                         for node in row:
                             node.update_neighbours(grid)
                     # Which algorithm to use:
-                    # Lambda function allows function with these perimeters to be called over and over without having to assign another function
-                    # specifically to that
+                    # Lambda function allows function with these parameters to be called over and over without having to define a whole other function
                     if algorithm == "a*":
                         assets.algorithms.a_star_algorithm(lambda: assets.board.draw_board(window, grid,
                                                                                            rows, size), grid, start, end)
@@ -468,14 +467,13 @@ def run_algorithms(window, size, rows, algorithm, maze_type):
                         assets.algorithms.best_first(lambda: assets.board.draw_board(window, grid,
                                                                                      rows, size), grid, start, end)
 
-                    # Reset started variable so that user can again give commands
                     started = False
 
 
 def main(window, size, rows):
-    """Runs the main menu window."""
+    """Runs the main menu window where the user can customise the maze and execute the chosen algorithm."""
 
-    # Variable to check if the left mouse button has been pressed
+    # Variable to check if the left mouse button has been pressed - used for buttons and dropdown menus
     clicked = False
 
     # Variable to set the maze type for the grid
@@ -488,7 +486,7 @@ def main(window, size, rows):
     # How to use
     usage_label = title_font.render("How to use:", 1, TEXT_COLOUR)
 
-    # DROPDOWNS
+    # DEFINE DROPDOWNS
     # rows
     rows_drop = Dropdown(BUTTON1,
                          BUTTON2,
@@ -499,6 +497,7 @@ def main(window, size, rows):
                          size // 10,
                          size // 25
                          )
+
     # No function needed for each option as it only changes a variable so None used
     rows_drop.add_options(("25", None), ("55", None), ("75", None))
     # Local variable to manage whether options list for rows_drop is displayed
@@ -539,7 +538,7 @@ def main(window, size, rows):
                                    ))
         window.blit(usage_label, (size // 20, size // 40))
 
-        # DROPDOWN
+        # DROPDOWNS
         # Rows
         rows_drop.draw_main(window, button_font, xpos, ypos)
 
@@ -578,14 +577,13 @@ def main(window, size, rows):
                         maze_type = option[0]
                         display_maze_options = False
 
-        # Reset clicked value
         clicked = False
 
         # EVENTS
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-            # Used in conjunction with mous position to detect when certain gui elements have been clicked
+            # Used in conjunction with mouse position to detect when certain gui elements have been clicked
             if pygame.mouse.get_pressed()[0]:
                 clicked = True
 
@@ -596,8 +594,7 @@ if __name__ == "__main__":
     # Pygame Window
     # Window will always be a square so size used instead of width and height
     SIZE = 825
-    ROWS = 25  # Default number of rows, actual number of rows can be changed within the main loop
-
+    ROWS = 25 
     WIN = pygame.display.set_mode((SIZE, SIZE))
     pygame.display.set_caption("Pathfinding Algorithms Visualiser")
 
