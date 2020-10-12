@@ -50,7 +50,7 @@
 * This always guarantees the shortest possible path
 
 
-#### 5. [Greedy best-first search](http://web.pdx.edu/~arhodes/ai6.pdf) ####
+#### 5. [Greedy Best-First Search](http://web.pdx.edu/~arhodes/ai6.pdf) ####
 * Uses the manhattan distance heuristic function like the a* algorithm
 * However, it does not take into account the distance already travelled and just expands the node with the shortest estimated distance next (hence greedy)
 * Does not guarantee the shortest path but it often does find the shortest path
