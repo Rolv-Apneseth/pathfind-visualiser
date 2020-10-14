@@ -46,7 +46,7 @@ def outline_rect(window, size, x, y, width, height):
 def draw_background(window, size, x, y, width, height):
     """Draws a frame to contain other ui elements. Has a thin black border."""
     bg_colour = BG2
-    # Draws outline arround background
+    # Draws outline around background
     outline_rect(window, size, x, y, width, height)
     # Draws background surface
     pygame.draw.rect(window, bg_colour, (x,
