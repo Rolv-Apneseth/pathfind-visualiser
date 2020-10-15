@@ -563,10 +563,8 @@ def main(window, size, rows):
             maze_type_drop.draw_main(window, button_font, xpos, ypos)
 
             # Checks if maze options should be displayed
-            if maze_type_drop.is_selected_main(xpos, ypos) and clicked and not display_maze_options:
-                display_maze_options = True
-            elif maze_type_drop.is_selected_main(xpos, ypos) and clicked and display_maze_options:
-                display_maze_options = False
+            if clicked and maze_type_drop.is_selected_main(xpos, ypos):
+                display_maze_options = not display_maze_options
 
             # If a maze option is clicked, sets the selected value to the maze option clicked and closes the maze options dropdown
             if display_maze_options:
