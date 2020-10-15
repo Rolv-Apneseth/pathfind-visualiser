@@ -180,7 +180,7 @@ def depth_first_search(draw, grid, start, end):
     """
     Searches every possible path from the starting node and returns a route.
 
-    Depth first search will be extremely innacurate at giving short paths in open mazes.
+    Depth first search will be extremely inaccurate at giving short paths in open mazes.
     This is because it searches nodes in order of top, right, bottom, left so it will always
     expand go to the left if possible (LIFO), often returning very longwinded routes to get to the end node.
     Hence, this does not ensure the shortest path.
