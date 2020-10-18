@@ -4,7 +4,10 @@ import pygame
 
 # Algorithm Helper Functions -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 def reconstruct_final_path(path, current, draw, start, end):
-    """Goes through each node in the path calculated by an algorithm function, and draws out the path on the display."""
+    """
+    Goes through each node in the path calculated by an algorithm
+    function, and draws out the path on the display.
+    """
 
     while current in path:
         # Necessary as a new loop has been opened
@@ -34,6 +37,7 @@ def heur(p1, p2):
 
     x1, y1 = p1
     x2, y2 = p2
+
     return abs(x1 - x2) + abs(y1 - y2)
 
 
@@ -54,8 +58,11 @@ def close_node(start, current):
 # A* ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 def a_star_algorithm(draw, grid, start, end):
     """
-    Searches through nodes guided by a heuristic function which predicts the distance to the end node and prioritises which node to search based on this.
+    Searches through nodes guided by a heuristic function which predicts the
+    distance to the end node and prioritises which node to search based on this.
+
     As this is a guided algorithm, it is usually faster than unguided ones.
+
     This ensures the shortest path.
     """
 
@@ -127,6 +134,7 @@ def a_star_algorithm(draw, grid, start, end):
 def breadth_first_search(draw, grid, start, end):
     """
     Searches every traversible node outwards starting from the start node until the end node is reached.
+
     This ensures the shortest path.
     """
 
@@ -175,12 +183,17 @@ def breadth_first_search(draw, grid, start, end):
 # Depth first search -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 def depth_first_search(draw, grid, start, end):
     """
-    Searches every possible path from the starting node and returns a route.
+    Searches every possible node from the starting node
+    in a specific order and returns a path.
 
-    Depth first search will be extremely inaccurate at giving short paths in open mazes.
-    This is because it searches nodes in order of top, right, bottom, left so it will always
-    expand go to the left if possible (LIFO), often returning very longwinded routes to get to the end node.
-    Hence, this does not ensure the shortest path.
+    Depth first search will be extremely inaccurate at
+    giving short paths in open mazes. This is because it
+    searches nodes in order of top, right, bottom, left
+    so it will always expand go to the left if possible
+    (LIFO), often returning very longwinded routes to
+    get to the end node.
+
+    This does not ensure the shortest path.
     """
 
     # Queue allows nodes to be searched in a certain order
@@ -199,7 +212,7 @@ def depth_first_search(draw, grid, start, end):
             if event.type == pygame.QUIT:
                 quit()
 
-        # Gets first item in the queue which will always be the last node added (LIFO)
+        # Gets first item in the queue which will always be the last node added
         current = open_set.get()
 
         if current == end:
@@ -229,12 +242,14 @@ def depth_first_search(draw, grid, start, end):
 # Dijkstra's shortest path algorithm -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 def dijkstras(draw, grid, start, end):
     """
-    Will appear extremely similar to breadth first search, but it is built to handle edges between nodes of different weights and uses a priority queue based on these weights.
+    Will appear extremely similar to breadth first search, but it is
+    built to handle edges between nodes of different weights and
+    uses a priority queue based on these weights.
 
     This ensures the shortest path.
     """
 
-    # Will allow the algorithm to prioritise nodes with lower distance scores but since all edges have weight 1, visually this won't make much of a difference
+    # Will allow the algorithm to prioritise nodes with lower distance scores but since all edges have weight 1, visually this won't make a difference
     open_set = PriorityQueue()
 
     # Position of item added to the queue, required for the priority queue
@@ -300,9 +315,12 @@ def dijkstras(draw, grid, start, end):
 # Greedy best-first search -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 def best_first(draw, grid, start, end):
     """
-    Uses the manhattan distance heuristic function like the a* algorithm, but does not take into account distance already travelled.
+    Uses the manhattan distance heuristic function like
+    the a* algorithm, but does not take into account distance
+    already travelled.
 
-    This does not ensure the shortest path as it does not take into account the distance from the start node.
+    This does not ensure the shortest path as it does
+    not take into account the distance from the start node.
     """
 
     # Will allow the algorithm to prioritise nodes with lower distance scores but since all edges have weight 1, visually this won't make much of a difference
