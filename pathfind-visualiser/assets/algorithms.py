@@ -126,7 +126,7 @@ def a_star_algorithm(draw, grid, start, end):
 # Breadth first search -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 def breadth_first_search(draw, grid, start, end):
     """
-    Searches every possible path from node to node starting at the start node and returns the shortest.
+    Searches every traversible node outwards starting from the start node until the end node is reached.
     This ensures the shortest path.
     """
 
@@ -135,12 +135,9 @@ def breadth_first_search(draw, grid, start, end):
     open_set = Queue()
     open_set.put(start)
 
-    # Keeps track of node prior in the path to a certain node
-    path = {}
-    # Add all nodes to path so they can be used in if statements without throwing a key error
-    for row in grid:
-        for node in row:
-            path[node] = None
+    # Keeps track of node prior in the path to a certain node (also tracks if node has been visited)
+    # All nodes are added to path so they can be used in if statements without throwing a key error
+    path = {node: None for row in grid for node in row}
 
     while not open_set.empty():
         # Necessary as a new loop has been opened
@@ -191,13 +188,9 @@ def depth_first_search(draw, grid, start, end):
     open_set = LifoQueue()
     open_set.put(start)
 
-    # Keeps track of node prior in the path to a certain node, also keeps track of whether a node has been visited
-    path = {}
-
-    # Add all nodes to path so they can be used in if statements without throwing a key error
-    for row in grid:
-        for node in row:
-            path[node] = None
+    # Keeps track of node prior in the path to a certain node (also tracks if node has been visited)
+    # All nodes are added to path so they can be used in if statements without throwing a key error
+    path = {node: None for row in grid for node in row}
 
     # While loop runs until the end point is found or there are no nodes left to search
     while not open_set.empty():
@@ -248,16 +241,12 @@ def dijkstras(draw, grid, start, end):
     count = 0
 
     # Minimum distance to get to each node
-    distance_score = {}
-    # Contains each node's previous node in it's shortest path, also keeps track of which nodes have been visited
-    path = {}
-
-    # Add all nodes to path so they can be used in if statements without throwing a key error
     # Give all nodes an infinite distance score so that any path that reaches them is shorter
-    for row in grid:
-        for node in row:
-            path[node] = None
-            distance_score[node] = float("inf")
+    distance_score = {node: float("inf") for row in grid for node in row}
+
+    # Keeps track of node prior in the path to a certain node (also tracks if node has been visited)
+    # All nodes are added to path so they can be used in if statements without throwing a key error
+    path = {node: None for row in grid for node in row}
 
     # Set distance score of start node to 0 and add it to the open set
     distance_score[start] = 0
@@ -321,19 +310,13 @@ def best_first(draw, grid, start, end):
     # Position of item added to the queue, required for the priority queue
     count = 0
 
-    # Distance to the end node (manhattan)
-    distance_score = {}
-    # Contains each node's previous node in it's shortest path. Also used to keep track of which nodes have been visited
-    path = {}
+    # All nodes are given a distance score calculated with the heuristic function
+    distance_score = {node: heur(node.get_position(), end.get_position())
+                      for row in grid for node in row}
 
-    # Add all nodes to path so they can be used in if statements without throwing a key error
-    # Give all nodes a distance score calculated with the heuristic function
-    for row in grid:
-        for node in row:
-            path[node] = None
-            distance_score[node] = heur(node.get_position(),
-                                        end.get_position()
-                                        )
+    # Keeps track of node prior in the path to a certain node (also tracks if node has been visited)
+    # All nodes are added to path so they can be used in if statements without throwing a key error
+    path = {node: None for row in grid for node in row}
 
     # Add start node to the open set
     open_set.put((distance_score[start], count, start))
