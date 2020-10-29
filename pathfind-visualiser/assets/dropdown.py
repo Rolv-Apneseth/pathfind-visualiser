@@ -1,8 +1,18 @@
 import pygame
 
 
-class Dropdown():
-    def __init__(self, menu_colour1, menu_colour2, option_colour1, option_colour2, x, y, width, height):
+class Dropdown:
+    def __init__(
+        self,
+        menu_colour1,
+        menu_colour2,
+        option_colour1,
+        option_colour2,
+        x,
+        y,
+        width,
+        height,
+    ):
 
         self.menu_colour1 = menu_colour1
         self.menu_colour2 = menu_colour2
@@ -30,30 +40,42 @@ class Dropdown():
 
         if not self.is_selected_main(xpos, ypos):
             # Text
-            name_label = font.render(self.selected_option,
-                                     1, self.menu_colour1)
-            window.blit(name_label, (self.x + (self.width // 2 - name_label.get_width() // 2),
-                                     self.y + (self.height // 2 - name_label.get_height() // 2)))
+            name_label = font.render(self.selected_option, 1, self.menu_colour1)
+            window.blit(
+                name_label,
+                (
+                    self.x + (self.width // 2 - name_label.get_width() // 2),
+                    self.y + (self.height // 2 - name_label.get_height() // 2),
+                ),
+            )
 
         else:
             # Define label
             # Generated first so it's width can be used in the background placement calculations
-            name_label = font.render(self.selected_option,
-                                     1, self.menu_colour2)
+            name_label = font.render(self.selected_option, 1, self.menu_colour2)
 
             # Box
             # x defined in that way so the background is centered
             # width is multiplied by 1.1 to give each option a bit more background on it's sides
-            pygame.draw.rect(window, self.menu_colour1, (self.x + (self.width // 2 - name_label.get_width() * 1.1 // 2),
-                                                         self.y,
-                                                         name_label.get_width() * 1.1,
-                                                         self.height
-                                                         ),
-                             0
-                             )
+            pygame.draw.rect(
+                window,
+                self.menu_colour1,
+                (
+                    self.x + (self.width // 2 - name_label.get_width() * 1.1 // 2),
+                    self.y,
+                    name_label.get_width() * 1.1,
+                    self.height,
+                ),
+                0,
+            )
             # Place label
-            window.blit(name_label, (self.x + (self.width // 2 - name_label.get_width() // 2),
-                                     self.y + (self.height // 2 - name_label.get_height() // 2)))
+            window.blit(
+                name_label,
+                (
+                    self.x + (self.width // 2 - name_label.get_width() // 2),
+                    self.y + (self.height // 2 - name_label.get_height() // 2),
+                ),
+            )
 
     def draw_options(self, window, font, xpos, ypos):
         """Display actual dropdown menu with options."""
@@ -61,8 +83,16 @@ class Dropdown():
         for i, option in enumerate(self.options):
             if not self.is_selected_option(xpos, ypos, i):
                 option_label = font.render(option[0], 1, self.option_colour1)
-                window.blit(option_label, (self.x + (self.width // 2 - option_label.get_width() // 2),
-                                           self.y + (self.height // 2 - option_label.get_height() // 2) + self.height * i + self.height))
+                window.blit(
+                    option_label,
+                    (
+                        self.x + (self.width // 2 - option_label.get_width() // 2),
+                        self.y
+                        + (self.height // 2 - option_label.get_height() // 2)
+                        + self.height * i
+                        + self.height,
+                    ),
+                )
 
             else:
                 # Generated first so it's width can be used in the background placement calculations
@@ -70,15 +100,29 @@ class Dropdown():
 
                 # x defined in that way so the background is centered under the origianl dropdown button
                 # width is multiplied by 1.1 to give each option a bit more background on it's sides
-                pygame.draw.rect(window, self.option_colour1, (self.x + (self.width // 2 - option_label.get_width() * 1.1 // 2),  # x
-                                                               self.y + self.height + i * self.height,  # y
-                                                               option_label.get_width() * 1.1,  # width
-                                                               self.height),  # height
-                                 0
-                                 )
+                pygame.draw.rect(
+                    window,
+                    self.option_colour1,
+                    (
+                        self.x
+                        + (self.width // 2 - option_label.get_width() * 1.1 // 2),  # x
+                        self.y + self.height + i * self.height,  # y
+                        option_label.get_width() * 1.1,  # width
+                        self.height,
+                    ),  # height
+                    0,
+                )
 
-                window.blit(option_label, (self.x + (self.width // 2 - option_label.get_width() // 2),
-                                           self.y + (self.height // 2 - option_label.get_height() // 2) + self.height * i + self.height))
+                window.blit(
+                    option_label,
+                    (
+                        self.x + (self.width // 2 - option_label.get_width() // 2),
+                        self.y
+                        + (self.height // 2 - option_label.get_height() // 2)
+                        + self.height * i
+                        + self.height,
+                    ),
+                )
 
     def is_selected_main(self, xpos, ypos):
         """Detect when the mouse is within the 'select mode' box."""
@@ -91,7 +135,12 @@ class Dropdown():
     def is_selected_option(self, xpos, ypos, i):
         """Detect when the mouse is within the option list."""
 
-        if self.x < xpos < self.x + self.width and self.y + self.height * (i + 1) < ypos < self.y + self.height + (i + 1) * self.height:
+        if (
+            self.x < xpos < self.x + self.width
+            and self.y + self.height * (i + 1)
+            < ypos
+            < self.y + self.height + (i + 1) * self.height
+        ):
             return True
         else:
             return False

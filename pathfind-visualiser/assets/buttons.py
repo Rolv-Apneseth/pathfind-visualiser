@@ -1,10 +1,12 @@
 import pygame
 
 
-class Button():
+class Button:
     """Used to make buttons to put on display for pygame. A function must be defined for each button"""
 
-    def __init__(self, colour1, colour2, x, y, width, height, function, text, outline=None):
+    def __init__(
+        self, colour1, colour2, x, y, width, height, function, text, outline=None
+    ):
         # Two colous since the colours alternate depending on whether the mouse
         # is hovering over the button or not
         self.colour1 = colour1
@@ -25,19 +27,26 @@ class Button():
         # If statement so that text and background colour for the button can alternate,
         # depending on whether the mouse is hovering over the button
         if self.is_selected(xpos, ypos):
-            pygame.draw.rect(win, self.colour1,
-                             (self.x, self.y, self.width, self.height),
-                             0
-                             )
+            pygame.draw.rect(
+                win, self.colour1, (self.x, self.y, self.width, self.height), 0
+            )
             text = font.render(self.text, 1, self.colour2)
-            win.blit(text, (self.x + self.width // 20,
-                            self.y + self.height // 2 - text.get_height() // 2
-                            ))
+            win.blit(
+                text,
+                (
+                    self.x + self.width // 20,
+                    self.y + self.height // 2 - text.get_height() // 2,
+                ),
+            )
         else:
             text = font.render(self.text, 1, self.colour1)
-            win.blit(text, (self.x + self.width // 20,
-                            self.y + self.height // 2 - text.get_height() // 2
-                            ))
+            win.blit(
+                text,
+                (
+                    self.x + self.width // 20,
+                    self.y + self.height // 2 - text.get_height() // 2,
+                ),
+            )
 
     def is_selected(self, xpos, ypos):
         """

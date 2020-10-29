@@ -74,7 +74,10 @@ def l_node(grid, node):
 def r_node(grid, node):
     """Selects node to the right if available."""
 
-    if node.row + 2 <= len(grid[node.row]) and not grid[node.row + 1][node.col].is_hard_barrier:
+    if (
+        node.row + 2 <= len(grid[node.row])
+        and not grid[node.row + 1][node.col].is_hard_barrier
+    ):
         return grid[node.row + 1][node.col]
     return False
 
@@ -190,7 +193,14 @@ def imperfect(grid):
         while available_nodes:
             node = available_nodes.pop()
             node.update_neighbours(grid)
-            if not path[node] and not node.row % 2 and not node.col % 2 and not node.is_hard_barrier and len(node.neighbours) > 3 and not node.is_hard_barrier:
+            if (
+                not path[node]
+                and not node.row % 2
+                and not node.col % 2
+                and not node.is_hard_barrier
+                and len(node.neighbours) > 3
+                and not node.is_hard_barrier
+            ):
                 return node
         return None
 
@@ -242,10 +252,13 @@ def simple_maze(grid):
                     # Loops twice to select 2 nodes
                     for _ in range(2):
                         # Nodes chosen from directions: up, down
-                        node = random.choice([grid[i][j - 1],
-                                              grid[i][j + 1],
-                                              grid[i + 1][j],
-                                              grid[i - 1][j]
-                                              ])
+                        node = random.choice(
+                            [
+                                grid[i][j - 1],
+                                grid[i][j + 1],
+                                grid[i + 1][j],
+                                grid[i - 1][j],
+                            ]
+                        )
                         node_reset(node)
     return grid

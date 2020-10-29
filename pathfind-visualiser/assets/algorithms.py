@@ -1,8 +1,9 @@
-from queue import PriorityQueue, Queue, LifoQueue
+from queue import LifoQueue, PriorityQueue, Queue
+
 import pygame
 
-
 # Algorithm Helper Functions -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
 def reconstruct_final_path(path, current, draw, start, end):
     """
@@ -128,8 +129,9 @@ def a_star_algorithm(draw, grid, start, end):
             if temp_g_score < g_score[neighbour]:
                 path[neighbour] = current
                 g_score[neighbour] = temp_g_score
-                f_score[neighbour] = temp_g_score + \
-                    heur(neighbour.get_position(), end.get_position())
+                f_score[neighbour] = temp_g_score + heur(
+                    neighbour.get_position(), end.get_position()
+                )
 
                 # Add neighbour node to open_set_hash and open_set
                 if neighbour not in open_set_hash:
@@ -376,8 +378,11 @@ def best_first(draw, grid, start, end):
 
     # All nodes are given a distance score calculated
     # with the heuristic function
-    distance_score = {node: heur(node.get_position(), end.get_position())
-                      for row in grid for node in row}
+    distance_score = {
+        node: heur(node.get_position(), end.get_position())
+        for row in grid
+        for node in row
+    }
 
     # Keeps track of node prior in the path to a certain
     # node (also tracks if node has been visited). All

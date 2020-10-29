@@ -1,6 +1,5 @@
 import pygame
 
-
 # COLOURS
 DEFAULT = (100, 100, 100)  # silver
 BARRIER = (0, 0, 0)  # black
@@ -13,7 +12,7 @@ GRIDLINES = (0, 0, 0)  # black
 
 
 # Node class ------------------------------------------------------------------
-class Node():
+class Node:
     """
     Defines each square that will appear on the gui.
     Contains many helper functions to make the node objects very easy to use.
@@ -83,8 +82,7 @@ class Node():
         return self.row, self.col
 
     def draw(self, window):
-        pygame.draw.rect(window, self.colour,
-                         (self.x, self.y, self.size, self.size))
+        pygame.draw.rect(window, self.colour, (self.x, self.y, self.size, self.size))
 
     def update_neighbours(self, grid):
         self.neighbours = []
@@ -95,11 +93,17 @@ class Node():
             self.neighbours.append(grid[self.row][self.col - 1])
 
         # Checks node below
-        if self.row < self.total_rows - 1 and not grid[self.row + 1][self.col].is_barrier():
+        if (
+            self.row < self.total_rows - 1
+            and not grid[self.row + 1][self.col].is_barrier()
+        ):
             self.neighbours.append(grid[self.row + 1][self.col])
 
         # Checks node to the right
-        if self.col < self.total_rows - 1 and not grid[self.row][self.col + 1].is_barrier():
+        if (
+            self.col < self.total_rows - 1
+            and not grid[self.row][self.col + 1].is_barrier()
+        ):
             self.neighbours.append(grid[self.row][self.col + 1])
 
         # Checks node above
