@@ -95,11 +95,14 @@ class Dropdown:
                 )
 
             else:
-                # Generated first so it's width can be used in the background placement calculations
+                # Generated first so it's width can be used in the background
+                # placement calculations
                 option_label = font.render(option[0], 1, self.option_colour2)
 
-                # x defined in that way so the background is centered under the origianl dropdown button
-                # width is multiplied by 1.1 to give each option a bit more background on it's sides
+                # x defined in that way so the background is centered under the
+                # original dropdown button
+                # width is multiplied by 1.1 to give each option a bit
+                # more background on it's sides
                 pygame.draw.rect(
                     window,
                     self.option_colour1,
