@@ -3,6 +3,7 @@ scripts/
 pyvenv.cfg
 .vscode
 Include/
+include/
 bin/
 lib64
 #(lib64/ below does not seem to work)
