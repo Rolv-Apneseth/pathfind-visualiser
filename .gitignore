@@ -3,6 +3,9 @@ scripts/
 pyvenv.cfg
 .vscode
 Include/
+bin/
+lib64
+#(lib64/ below does not seem to work)
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
