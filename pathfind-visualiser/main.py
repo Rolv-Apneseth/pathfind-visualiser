@@ -5,6 +5,13 @@ from pathfinder import board, maze, algorithms
 from pathfinder.buttons import Button
 from pathfinder.dropdown import Dropdown
 
+
+# MEASUREMENTS
+# Window will always be a square
+SIZE = 825
+# Default number of rows, will be changed in game
+ROWS = 25
+
 # COLOURS
 BUTTON1 = (0, 0, 0)
 BUTTON2 = (255, 255, 255)
@@ -24,14 +31,18 @@ tiny_font = pygame.font.SysFont("arial", 15)
 tiny_bold_font = pygame.font.SysFont("arial", 15, bold=True)
 
 
-# Extra Draw UI Functions -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Extra Draw UI Functions #####################################################
 def outline_rect(window, size, x, y, width, height):
-    """Draws a black rectangle, slightly bigger than the measurements passed in.
-    Use this as a background for another rectangle to give it an outline. (Just give the measurements for that rectangle)
     """
+    Draws a black rectangle, slightly bigger than the measurements passed in.
+
+    Use this as a background for another rectangle to give it an outline. (Just
+    give the measurements for that rectangle).
+    """
+
     outline_colour = OUTLINE_COLOUR
 
-    # outline width
+    # Outline width
     extra_size = size // 400
 
     pygame.draw.rect(
@@ -56,7 +67,10 @@ def draw_background(window, size, x, y, width, height):
 
 
 def draw_instructions(window, size):
-    """Draw elements onto the gui which give text instructions on how to use the program."""
+    """
+    Draw elements onto the gui which give text instructions on how to use the
+    program.
+    """
 
     # BACKGROUND
     # Measurements, all label placements will be based off these as well
@@ -137,7 +151,10 @@ def draw_instructions(window, size):
 
 
 def draw_key(window, size):
-    """Draws elements onto the gui which show the user what each colour node means within the program."""
+    """
+    Draws elements onto the gui which show the user what each colour node means
+    within the program.
+    """
 
     # BACKGROUND
     # Measurements, all label placements will be based off these as well
@@ -212,7 +229,10 @@ def draw_key(window, size):
 
 
 def draw_controls(window, size):
-    """Draws elements onto the gui which show the user what buttons to press to do what when the program is running."""
+    """
+    Draws elements onto the gui which show the user what buttons to press to do
+    what when the program is running.
+    """
 
     # BACKGROUND
     # Measurements, all label placements will be based off these as well
@@ -262,7 +282,9 @@ def draw_controls(window, size):
 
 
 def draw_buttons(window, size, rows, xpos, ypos, clicked, maze_type):
-    """Displays buttons which will each run the program with a specific algorithm."""
+    """
+    Displays buttons which will each run the program with a specific algorithm.
+    """
 
     # BACKGROUND
     draw_background(
@@ -339,7 +361,8 @@ def draw_buttons(window, size, rows, xpos, ypos, clicked, maze_type):
     )
     buttons.append(best_first_button)
 
-    # Loop through the buttons and execute their function if they are selected and the mouse has been clicked
+    # Loop through the buttons and execute their function if they are selected and
+    # the mouse has been clicked
     for button in buttons:
         button.draw(window, button_font, xpos, ypos)
 
@@ -349,8 +372,12 @@ def draw_buttons(window, size, rows, xpos, ypos, clicked, maze_type):
 
 
 def draw_options(window, size):
-    """Draws option elements onto the gui (labels for row and maze dropdowns which are defined in main())"""
-    # Measurements
+    """
+    Draws option elements onto the gui (labels for row and maze dropdowns which
+    are defined in main()).
+    """
+
+    # MEASUREMENTS
     x = size * 37 // 60
     y = size * 25 // 40
     width = size * 7 // 20
@@ -372,9 +399,9 @@ def draw_options(window, size):
     window.blit(maze_type_label, (x + size // 80, y + size * 10 // 80))
 
 
-# Main Functions -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Main Functions #####################################################
 def run_algorithms(window, size, rows, algorithm, maze_type):
-    """Runs the maze window, where the chosen algorithm can be executed"""
+    """Runs the maze window, where the chosen algorithm can be executed."""
 
     grid = board.make_grid(rows, size)
 
@@ -391,7 +418,8 @@ def run_algorithms(window, size, rows, algorithm, maze_type):
     end = None
 
     run = True
-    # Keeps track of whether algorithm has been started, so user input can be disabled for its duration
+    # Keeps track of whether algorithm has been started, so user input can be
+    # disabled for its duration
     started = False
 
     while run:
@@ -452,7 +480,6 @@ def run_algorithms(window, size, rows, algorithm, maze_type):
                         for node in row:
                             node.update_neighbours(grid)
                     # Which algorithm to use:
-                    # Lambda function allows function with these parameters to be called over and over without having to define a whole other function
                     if algorithm == "a*":
                         algorithms.a_star_algorithm(
                             lambda: board.draw_board(window, grid, rows, size),
@@ -497,9 +524,13 @@ def run_algorithms(window, size, rows, algorithm, maze_type):
 
 
 def main(window, size, rows):
-    """Runs the main menu window where the user can customise the maze and execute the chosen algorithm."""
+    """
+    Runs the main menu window where the user can customise the maze and execute
+    the chosen algorithm.
+    """
 
-    # Variable to check if the left mouse button has been pressed - used for buttons and dropdown menus
+    # Variable to check if the left mouse button has been pressed - used for
+    # buttons and dropdown menus
     clicked = False
 
     # Variable to set the maze type for the grid
@@ -558,7 +589,7 @@ def main(window, size, rows):
         draw_key(window, size)
         draw_controls(window, size)
 
-        # get mouse position
+        # Get mouse position
         xpos, ypos = pygame.mouse.get_pos()
 
         draw_buttons(window, size, rows, xpos, ypos, clicked, maze_type)
@@ -584,7 +615,8 @@ def main(window, size, rows):
         ):
             display_rows_options = False
 
-        # If a row option is clicked, sets the selected value to the row option clicked and closes the row options dropdown
+        # If a row option is clicked, sets the selected value to the row option
+        # clicked and closes the row options dropdown
         if display_rows_options:
             rows_drop.draw_options(window, button_font, xpos, ypos)
             for i, option in enumerate(rows_drop.options):
@@ -602,7 +634,8 @@ def main(window, size, rows):
             if clicked and maze_type_drop.is_selected_main(xpos, ypos):
                 display_maze_options = not display_maze_options
 
-            # If a maze option is clicked, sets the selected value to the maze option clicked and closes the maze options dropdown
+            # If a maze option is clicked, sets the selected value to the maze
+            # option clicked and closes the maze options dropdown
             if display_maze_options:
                 maze_type_drop.draw_options(window, button_font, xpos, ypos)
                 for i, option in enumerate(maze_type_drop.options):
@@ -617,7 +650,8 @@ def main(window, size, rows):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-            # Used in conjunction with mouse position to detect when certain gui elements have been clicked
+            # Used in conjunction with mouse position to detect when certain gui
+            # elements have been clicked
             if pygame.mouse.get_pressed()[0]:
                 clicked = True
 
@@ -625,10 +659,6 @@ def main(window, size, rows):
 
 
 if __name__ == "__main__":
-    # Pygame Window
-    # Window will always be a square so size used instead of width and height
-    SIZE = 825
-    ROWS = 25
     WIN = pygame.display.set_mode((SIZE, SIZE))
     pygame.display.set_caption("Pathfinding Algorithms Visualiser")
 

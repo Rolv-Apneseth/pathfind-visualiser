@@ -1,14 +1,12 @@
 from queue import LifoQueue, PriorityQueue, Queue
-
 import pygame
 
-# Algorithm Helper Functions -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
+# Algorithm Helper Functions #####################################################
 def reconstruct_final_path(path, current, draw, start, end):
     """
-    Goes through each node in the path calculated by an algorithm
-    function, and draws out the path on the display.
+    Goes through each node in the path calculated by an algorithm function, and
+    draws out the path on the display.
     """
 
     while current in path:
@@ -17,7 +15,7 @@ def reconstruct_final_path(path, current, draw, start, end):
             if event.type == pygame.QUIT:
                 quit()
 
-        # path contains nodes as node: node before that node,
+        # Path contains nodes as current node: previous node,
         # so this goes through the nodes backwards from the end
         # node to the start node
         current = path[current]
@@ -26,8 +24,8 @@ def reconstruct_final_path(path, current, draw, start, end):
         if current == start:
             break
 
-    # Make start and end nodes change colour back to their
-    # original, and not the path colour
+    # Make start and end nodes change colour back to their original, and
+    # not the path colour
     end.make_end()
     start.make_start()
 
@@ -61,7 +59,6 @@ def close_node(start, current):
         current.make_closed()
 
 
-# A* ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 def a_star_algorithm(draw, grid, start, end):
     """
     Searches through nodes guided by a heuristic function which
@@ -149,7 +146,6 @@ def a_star_algorithm(draw, grid, start, end):
     return False
 
 
-# Breadth first search -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 def breadth_first_search(draw, grid, start, end):
     """
     Searches every traversible node outwards starting from
@@ -203,7 +199,6 @@ def breadth_first_search(draw, grid, start, end):
     return False
 
 
-# Depth first search -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 def depth_first_search(draw, grid, start, end):
     """
     Searches every possible node from the starting node
@@ -266,7 +261,6 @@ def depth_first_search(draw, grid, start, end):
     return False
 
 
-# Dijkstra's shortest path algorithm -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 def dijkstras(draw, grid, start, end):
     """
     Will appear extremely similar to breadth first search,
@@ -355,7 +349,6 @@ def dijkstras(draw, grid, start, end):
     return False
 
 
-# Greedy best-first search -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 def best_first(draw, grid, start, end):
     """
     Uses the manhattan distance heuristic function

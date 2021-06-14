@@ -2,7 +2,10 @@ import pygame
 
 
 class Button:
-    """Used to make buttons to put on display for pygame. A function must be defined for each button"""
+    """
+    Used to make buttons to put on display for pygame. A function must be defined
+    for each button.
+    """
 
     def __init__(
         self, colour1, colour2, x, y, width, height, function, text, outline=None
@@ -22,10 +25,10 @@ class Button:
         self.outline = outline
 
     def draw(self, win, font, xpos, ypos):
-        """Used to draw buttons onto the display each frame"""
+        """Used to draw buttons onto the display each frame."""
 
-        # If statement so that text and background colour for the button can alternate,
-        # depending on whether the mouse is hovering over the button
+        # If statement so that text and background colour for the button can
+        # alternate, depending on whether the mouse is hovering over the button
         if self.is_selected(xpos, ypos):
             pygame.draw.rect(
                 win, self.colour1, (self.x, self.y, self.width, self.height), 0
@@ -51,6 +54,7 @@ class Button:
     def is_selected(self, xpos, ypos):
         """
         Must be given the x and y positions of the mouse. Use pygame.mouse.get_pos().
+
         Returns True if the mouse is hovering over the button.
         """
         if self.x < xpos < self.x + self.width:

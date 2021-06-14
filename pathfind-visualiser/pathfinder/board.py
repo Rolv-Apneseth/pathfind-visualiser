@@ -1,5 +1,6 @@
 import pygame
 
+
 # COLOURS
 DEFAULT = (100, 100, 100)  # silver
 BARRIER = (0, 0, 0)  # black
@@ -11,10 +12,10 @@ START = (0, 0, 255)  # (255, 165, 0)  # orange
 GRIDLINES = (0, 0, 0)  # black
 
 
-# Node class ------------------------------------------------------------------
 class Node:
     """
     Defines each square that will appear on the gui.
+
     Contains many helper functions to make the node objects very easy to use.
     State of the node defined by it's colour
     """
@@ -111,9 +112,11 @@ class Node:
             self.neighbours.append(grid[self.row - 1][self.col])
 
 
-# Board Functions -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Board Functions #####################################################
 def set_hard_barriers(grid):
-    """Makes barriers which can't be cleared, which make up the border of the display"""
+    """
+    Makes barriers which can't be cleared, which make up the border of the display.
+    """
 
     for node in grid[0]:
         node.make_hard_barrier()
@@ -145,7 +148,9 @@ def make_grid(rows, size):
 
 
 def draw_gridlines(window, rows, size):
-    """Draws gridlines which allows each node to be distinguishable from those around it."""
+    """
+    Draws gridlines which allows each node to be distinguishable from those around it.
+    """
 
     gap = size // rows
     for i in range(rows):
@@ -170,7 +175,10 @@ def draw_board(window, grid, rows, size):
 
 
 def get_clicked_position(pos, rows, size):
-    """Returns the location of the node which the position is hovering over (top left of the square)."""
+    """
+    Returns the location of the node which the position is hovering over (top left
+    of the square).
+    """
 
     gap = size // rows
     y, x = pos

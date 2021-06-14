@@ -1,7 +1,7 @@
 import random
 
 
-# Helper functions ----------------------------------------------------------------------------------------------------------------------------------
+# Helper functions #####################################################
 def make_node_barrier(node):
     """Turns a node into a hard barrier."""
 
@@ -26,7 +26,8 @@ def generate_blank_path(grid):
 def make_wall(grid, start, direction, path):
     """Generates a wall in a given direction from a starting node."""
 
-    # Will contain all the nodes changed (so one can be made open again using make_opening)
+    # Will contain all the nodes changed (so one can be made open again using
+    # make_opening)
     wall = []
 
     node = start
@@ -102,9 +103,12 @@ def d_node(grid, node):
 directions = [r_node, d_node, l_node, u_node]
 
 
-# Maze type functions -----------------------------------------------------------------------------------------------------------------------------
+# Maze type functions #####################################################
 def completely_random(grid):
-    """Generates a completely random maze, where every node has a 1 in 4 chance of becoming a barrier."""
+    """
+    Generates a completely random maze, where every node has a 1 in 4 chance of
+    becoming a barrier.
+    """
 
     for row in grid:
         for node in row:
@@ -121,11 +125,15 @@ def basic_swirl(grid):
     """
 
     # Defines which nodes have been visited, used in one_direction function
-    # Needs to be defined here so it can be checked on through different calls of the one_direction function
+    # Needs to be defined here so it can be checked on through different calls of
+    # the one_direction function
     path = generate_blank_path(grid)
 
     def one_direction(grid, direction, start):
-        """Uses a given movement function to keep moving in a specific direction until it hits a barrier."""
+        """
+        Uses a given movement function to keep moving in a specific direction
+        until it hits a barrier.
+        """
 
         node = start
         # Arbitrary path value just so the start node does not become a barrier
@@ -143,13 +151,15 @@ def basic_swirl(grid):
 
             # If next node is not valid:
             if not node:
-                # If previous node was the start node, break as no other direction can therefore be taken
+                # If previous node was the start node, break as no other direction
+                # can therefore be taken
                 if prev_node == start:
                     return False
                 # Otherwise, return the previous node
                 return prev_node
 
-            # Make the neighbours of the previous node barriers, if they are not yet visited and are not the current node
+            # Make the neighbours of the previous node barriers, if they are not
+            # yet visited and are not the current node
             for neighbour in prev_node.neighbours:
                 if neighbour is not node and not path[neighbour]:
                     make_node_barrier(neighbour)
@@ -171,12 +181,12 @@ def basic_swirl(grid):
 
 def imperfect(grid):
     """
-    My first attempt at a proper maze generating algorithm.
-    Imperfect because some chunks of the maze are unfortunately left inacessible.
+    My first attempt at a proper maze generating algorithm, this algorithm creates
+    an imperfect maze (because some small chunks of the maze can be left
+    inacessible).
 
-    Works by adding horizontal and vertical walls of barrier nodes to the grid around a random start node then removing a single barrier from each wall.
-
-    'Wall Adder' algorithm as it adds walls to an empty grid.
+    It works by adding horizontal and vertical walls of barrier nodes to the grid
+    around a random start node then removing a single barrier from each wall.
     """
 
     # Defines which nodes have been visited/changed
@@ -210,7 +220,8 @@ def imperfect(grid):
         if not start:
             break
 
-        # Makes wall in each direction from the start node and opens a single node on each wall
+        # Makes wall in each direction from the start node and opens a single node
+        # on each wall
         for direction in directions:
             wall = make_wall(grid, start, direction, path)
             if not wall:
@@ -222,15 +233,13 @@ def imperfect(grid):
 
 def simple_maze(grid):
     """
-    Very simple form of maze generation.
-    Makes every odd row and column node into a barrier, then loops through the unaffected nodes and resets
-    2 adjacent barrier nodes at random.
+    This algorithm was inspired by binary tree maze generation, but since the
+    walls/barrierrs on this program are full cells rather than space between
+    adjacent cells I had to play around with it and came up with this to take
+    its place.
 
-    This algorithm was inspired by binary tree maze generation, but since the walls/barrierrs on this program
-    are full cells rather than space between adjacent cells I had to play around with it and came up with this
-    to take its place.
-
-    'Path Carver' algorithm as it starts with walls and then knocks down walls to connect nodes.
+    It makes every odd row and column node into a barrier, then loops through the
+    unaffected nodes and resets 2 adjacent barrier nodes at random.
     """
 
     # Goes through odd rows and columns and makes all of those nodes barriers
@@ -243,8 +252,9 @@ def simple_maze(grid):
                 if not j % 2:
                     make_node_barrier(node)
 
-    # Goes  through all the even rows and columns (currently open nodes surrounded by barrier nodes)
-    # and chooses, at random, 2 adjacent barrier nodes and resets them
+    # Goes  through all the even rows and columns (currently open nodes surrounded
+    # by barrier nodes) and chooses, at random, 2 adjacent barrier nodes and
+    # resets them
     for i, row in enumerate(grid):
         if i % 2:
             for j, node in enumerate(row):
