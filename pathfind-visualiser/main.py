@@ -1,12 +1,9 @@
 import pygame
 
-import assets.algorithms
-
 # Custom module imports
-import assets.board
-import assets.maze
-from assets.buttons import Button
-from assets.dropdown import Dropdown
+from pathfinder import board, maze, algorithms
+from pathfinder.buttons import Button
+from pathfinder.dropdown import Dropdown
 
 # COLOURS
 BUTTON1 = (0, 0, 0)
@@ -179,37 +176,37 @@ def draw_key(window, size):
     # start
     pygame.draw.rect(
         window,
-        assets.board.START,
+        board.START,
         (x + size // 80, y + size * 4 // 80, size // 50, size // 50),
     )
     # end
     pygame.draw.rect(
         window,
-        assets.board.END,
+        board.END,
         (x + size * 14 // 80, y + size * 4 // 80, size // 50, size // 50),
     )
     # barrier
     pygame.draw.rect(
         window,
-        assets.board.BARRIER,
+        board.BARRIER,
         (x + size // 80, y + size * 8 // 80, size // 50, size // 50),
     )
     # path
     pygame.draw.rect(
         window,
-        assets.board.PATH,
+        board.PATH,
         (x + size * 14 // 80, y + size * 8 // 80, size // 50, size // 50),
     )
     # open
     pygame.draw.rect(
         window,
-        assets.board.OPEN,
+        board.OPEN,
         (x + size // 80, y + size * 12 // 80, size // 50, size // 50),
     )
     # closed
     pygame.draw.rect(
         window,
-        assets.board.CLOSED,
+        board.CLOSED,
         (x + size * 14 // 80, y + size * 12 // 80, size // 50, size // 50),
     )
 
@@ -379,16 +376,16 @@ def draw_options(window, size):
 def run_algorithms(window, size, rows, algorithm, maze_type):
     """Runs the maze window, where the chosen algorithm can be executed"""
 
-    grid = assets.board.make_grid(rows, size)
+    grid = board.make_grid(rows, size)
 
     if maze_type == "Random":
-        grid = assets.maze.completely_random(grid)
+        grid = maze.completely_random(grid)
     if maze_type == "Swirl":
-        grid = assets.maze.basic_swirl(grid)
+        grid = maze.basic_swirl(grid)
     if maze_type == "Imperfect":
-        grid = assets.maze.imperfect(grid)
+        grid = maze.imperfect(grid)
     if maze_type == "Simple":
-        grid = assets.maze.simple_maze(grid)
+        grid = maze.simple_maze(grid)
 
     start = None
     end = None
@@ -398,7 +395,7 @@ def run_algorithms(window, size, rows, algorithm, maze_type):
     started = False
 
     while run:
-        assets.board.draw_board(window, grid, rows, size)
+        board.draw_board(window, grid, rows, size)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 quit()
@@ -413,7 +410,7 @@ def run_algorithms(window, size, rows, algorithm, maze_type):
             # Changing nodes
             if pygame.mouse.get_pressed()[0]:  # left click
                 pos = pygame.mouse.get_pos()
-                row, col = assets.board.get_clicked_position(pos, rows, size)
+                row, col = board.get_clicked_position(pos, rows, size)
                 node = grid[row][col]
                 if not start and node != end and not node.is_hard_barrier:
                     start = node
@@ -425,7 +422,7 @@ def run_algorithms(window, size, rows, algorithm, maze_type):
                     node.make_barrier()
             elif pygame.mouse.get_pressed()[2]:  # right click
                 pos = pygame.mouse.get_pos()
-                row, col = assets.board.get_clicked_position(pos, rows, size)
+                row, col = board.get_clicked_position(pos, rows, size)
                 node = grid[row][col]
                 if not node.is_hard_barrier:
                     node.reset()
@@ -457,40 +454,40 @@ def run_algorithms(window, size, rows, algorithm, maze_type):
                     # Which algorithm to use:
                     # Lambda function allows function with these parameters to be called over and over without having to define a whole other function
                     if algorithm == "a*":
-                        assets.algorithms.a_star_algorithm(
-                            lambda: assets.board.draw_board(window, grid, rows, size),
+                        algorithms.a_star_algorithm(
+                            lambda: board.draw_board(window, grid, rows, size),
                             grid,
                             start,
                             end,
                         )
 
                     if algorithm == "breadth first":
-                        assets.algorithms.breadth_first_search(
-                            lambda: assets.board.draw_board(window, grid, rows, size),
+                        algorithms.breadth_first_search(
+                            lambda: board.draw_board(window, grid, rows, size),
                             grid,
                             start,
                             end,
                         )
 
                     if algorithm == "depth first":
-                        assets.algorithms.depth_first_search(
-                            lambda: assets.board.draw_board(window, grid, rows, size),
+                        algorithms.depth_first_search(
+                            lambda: board.draw_board(window, grid, rows, size),
                             grid,
                             start,
                             end,
                         )
 
                     if algorithm == "dijkstra's":
-                        assets.algorithms.dijkstras(
-                            lambda: assets.board.draw_board(window, grid, rows, size),
+                        algorithms.dijkstras(
+                            lambda: board.draw_board(window, grid, rows, size),
                             grid,
                             start,
                             end,
                         )
 
                     if algorithm == "best-first":
-                        assets.algorithms.best_first(
-                            lambda: assets.board.draw_board(window, grid, rows, size),
+                        algorithms.best_first(
+                            lambda: board.draw_board(window, grid, rows, size),
                             grid,
                             start,
                             end,
