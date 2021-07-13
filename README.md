@@ -2,6 +2,10 @@
 
 Pygame program which can generate mazes and visualises different pathfinding algorithms, made with pygame
 
+##Demo
+
+[![Video demo of Speed Typer](http://img.youtube.com/vi/Qf5Zq8lq0pg/0.jpg)](http://www.youtube.com/watch?v=Qf5Zq8lq0pg "Portfolio Project - Pathfind Visualiser")
+
 ## What I learned
 
 - Pathfinding algorithms
