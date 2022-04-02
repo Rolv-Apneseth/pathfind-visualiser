@@ -1,18 +1,10 @@
 # pathfind-visualiser
 
-Pygame program which can generate mazes and visualises different pathfinding algorithms, made with pygame
+![pathfind-visualiser](https://user-images.githubusercontent.com/69486699/161395210-d3d26e3b-7921-4e86-9b2d-54b6478688bd.png)
 
-## Demo
+## Description
 
-[![Video demo of Speed Typer](http://img.youtube.com/vi/Qf5Zq8lq0pg/0.jpg)](http://www.youtube.com/watch?v=Qf5Zq8lq0pg "Portfolio Project - Pathfind Visualiser")
-
-## What I learned
-
-- Pathfinding algorithms
-- Maze generating algorithms
-- Implementation of mathematical algorithms in python
-- Data visualisation and menu design using pygame
-- Use of OOP
+Pathfinding algorightms written in Python and visualised with the [Pygame](https://pypi.org/project/pygame/) library. Also has a couple built-in maze generation algorithms, and gives the user the ability to create their own mazes by hand, so that algorithms can be observed under a variety of different circumstances.
 
 ## Installation
 
