@@ -4,7 +4,7 @@
 
 ## Description
 
-Pathfinding algorightms written in Python and visualised with the [Pygame](https://pypi.org/project/pygame/) library. Also has a couple built-in maze generation algorithms, and gives the user the ability to create their own mazes by hand, so that algorithms can be observed under a variety of different circumstances.
+Pathfinding algorigthms written in Python and visualised with the [Pygame](https://pypi.org/project/pygame/) library. Also has a couple built-in maze generation algorithms, and gives the user the ability to create their own mazes by hand, so that algorithms can be observed under a variety of different circumstances.
 
 ## Installation
 
