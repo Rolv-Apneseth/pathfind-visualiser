@@ -1,0 +1,31 @@
+[tool.poetry]
+name = "pathfind-visualiser"
+version = "0.1.1"
+readme="README.md"
+description = "Pathfinding algorigthms written in Python and visualised with the Pygame library"
+authors = ["Rolv-Apneseth <rolv.apneseth@gmail.com>"]
+homepage = "https://github.com/Rolv-Apneseth/pathfind-visualiser"
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = ">=3.9,<4.0.0"
+pygame = "^2.1.2"
+
+[tool.poetry.dev-dependencies]
+black = "^22.1.0"
+mypy = "^0.931"
+types-requests = "^2.27.9"
+types-beautifulsoup4 = "^4.10.11"
+pytest = "^7.0.0"
+codespell = "^2.1.0"
+flake8 = "^4.0.1"
+flake8-black = "^0.2.4"
+flake8-isort = "^4.1.1"
+flake8-tidy-imports = "^4.6.0"
+
+[tool.poetry.scripts]
+pathfind-visualiser = "pathfind_visualiser.main:main"
+
+[build-system]
+requires = ["poetry_core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

@@ -1,10 +1,9 @@
 import pygame
 
 # Custom module imports
-from pathfinder import board, maze, algorithms
-from pathfinder.buttons import Button
-from pathfinder.dropdown import Dropdown
-
+from pathfind_visualiser import algorithms, board, maze
+from pathfind_visualiser.buttons import Button
+from pathfind_visualiser.dropdown import Dropdown
 
 # MEASUREMENTS
 # Window will always be a square
@@ -523,7 +522,7 @@ def run_algorithms(window, size, rows, algorithm, maze_type):
                     started = False
 
 
-def main(window, size, rows):
+def run_main_menu(window, size, rows):
     """
     Runs the main menu window where the user can customise the maze and execute
     the chosen algorithm.
@@ -610,9 +609,7 @@ def main(window, size, rows):
             and not display_rows_options
         ):
             display_rows_options = True
-        elif (
-            rows_drop.is_selected_main(xpos, ypos) and clicked and display_rows_options
-        ):
+        elif rows_drop.is_selected_main(xpos, ypos) and clicked and display_rows_options:
             display_rows_options = False
 
         # If a row option is clicked, sets the selected value to the row option
@@ -658,8 +655,12 @@ def main(window, size, rows):
         pygame.display.update()
 
 
-if __name__ == "__main__":
+def main():
     WIN = pygame.display.set_mode((SIZE, SIZE))
     pygame.display.set_caption("Pathfinding Algorithms Visualiser")
 
-    main(WIN, SIZE, ROWS)
+    run_main_menu(WIN, SIZE, ROWS)
+
+
+if __name__ == "__main__":
+    main()
