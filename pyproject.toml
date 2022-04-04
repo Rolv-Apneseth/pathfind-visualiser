@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pathfind-visualiser"
-version = "0.1.1"
+version = "0.1.2"
 readme="README.md"
 description = "Pathfinding algorigthms written in Python and visualised with the Pygame library"
 authors = ["Rolv-Apneseth <rolv.apneseth@gmail.com>"]
